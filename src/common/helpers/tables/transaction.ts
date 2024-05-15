@@ -1,0 +1,101 @@
+export const columns = [
+  {
+    Header: "Reseller",
+    accessor: "reseller",
+  },
+  {
+    Header: "Total on-ramp",
+    accessor: "total_on_ramp",
+  },
+  {
+    Header: "Total off-ramp",
+    accessor: "total_off_ramp",
+  },
+  {
+    Header: "Commission",
+    accessor: "commission",
+  },
+  {
+    Header: "Pending Txns",
+    accessor: "pending_txns",
+  },
+  {
+    Header: "Users",
+    accessor: "users",
+  },
+];
+
+export const data = [
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+  {
+    reseller: "Charles Avis",
+    total_on_ramp: 10000,
+    currency: "USD",
+    total_off_ramp: 12324,
+    commission: 1200,
+    pending_txns: 12,
+    users: 3200,
+  },
+];
