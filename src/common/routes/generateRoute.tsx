@@ -3,6 +3,7 @@ import { IModalRoute, IRoute } from "../types";
 import { Suspense } from "react";
 import AuthLayout from "@/modules/auth/components/layout";
 import { DashboardLayout } from "@/modules/dashboard/components/layout";
+import { SuspenseLoader } from "../components/suspense-loader";
 
 export const generateRoute = ({ path, Component, access }: IRoute) => {
   return (
@@ -13,8 +14,7 @@ export const generateRoute = ({ path, Component, access }: IRoute) => {
       <Route
         path={path}
         element={
-          //TODO: Create a fallback loader
-          <Suspense fallback={<p>Loading</p>}>
+          <Suspense fallback={<SuspenseLoader />}>
             <Component />
           </Suspense>
         }

@@ -1,7 +1,8 @@
 import CustomButton from "@/common/components/forms/button";
 import CustomInput from "@/common/components/forms/input";
+import { paths } from "@/common/routes";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginFormType {
   email: string;
@@ -15,8 +16,10 @@ export const LoginForm = () => {
     handleSubmit,
   } = useForm<LoginFormType>();
 
-  const onSubmit: SubmitHandler<LoginFormType> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<LoginFormType> = () => {
+    navigate(paths.dashboard.overview);
   };
 
   return (
@@ -32,6 +35,7 @@ export const LoginForm = () => {
             label="Enter Password"
             {...register("password", { required: true })}
             error={errors.password}
+            type="password"
           />
           <div className="text-right mt-2">
             <Link to="#" className="text-sm text-[#000000] font-medium">
