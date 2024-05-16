@@ -8,11 +8,22 @@ interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string | React.ReactNode;
   error?: FieldError;
   labelClassName?: string;
+  showError?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = React.forwardRef(
   (
-    { label, className, error, type, name, required, labelClassName, ...rest },
+    {
+      label,
+      className,
+      error,
+      type,
+      name,
+      required,
+      labelClassName,
+      showError = true,
+      ...rest
+    },
     ref
   ) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -56,13 +67,15 @@ const CustomInput: React.FC<CustomInputProps> = React.forwardRef(
             )}
           </div>
         </div>
-        <div className="h-4">
-          {error && (
-            <span className="text-xs text-red-500 font-bold">
-              {error.message || "field required"}
-            </span>
-          )}
-        </div>
+        {showError ? (
+          <div className="h-4">
+            {error && (
+              <span className="text-xs text-red-500 font-bold">
+                {error.message || "field required"}
+              </span>
+            )}
+          </div>
+        ) : null}
       </div>
     );
   }

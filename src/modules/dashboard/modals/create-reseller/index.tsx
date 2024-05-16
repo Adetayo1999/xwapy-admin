@@ -55,6 +55,12 @@ export default function CreateSeller() {
                   className="text-sm placeholder:text-sm"
                   placeholder="About"
                 />
+                <CustomInput
+                  label="Sub-Domain"
+                  labelClassName="text-xs"
+                  className="text-sm placeholder:text-sm"
+                  placeholder="username.xwapy.com"
+                />
               </div>
             </div>
             <div className="flex-[0.4]">

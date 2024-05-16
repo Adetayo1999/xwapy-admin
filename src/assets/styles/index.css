@@ -28,4 +28,5 @@
 
 html {
   @apply font-lato font-normal;
+  font-size: 80%;
 }

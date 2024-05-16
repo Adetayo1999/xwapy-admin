@@ -25,8 +25,8 @@ export default function AuthLayout() {
             <Outlet />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 z-10">
-          <img src={authDesign} alt="" />
+        <div className="absolute bottom-0 left-0 z-10 w-full">
+          <img src={authDesign} className="w-full" />
         </div>
       </div>
     </div>
