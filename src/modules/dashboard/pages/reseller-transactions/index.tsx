@@ -3,6 +3,7 @@ import { AnimatedTabs } from "../../components/animated-tabs";
 import { useParams } from "react-router-dom";
 import { TransactionGroupTable } from "../../components/tables/transaction-group-table";
 import { CustomDropDown } from "@/common/components/custom-dropdown";
+import CustomInput from "@/common/components/forms/input";
 
 export default function ResellerTransactions() {
   const { id } = useParams();
@@ -49,6 +50,11 @@ export default function ResellerTransactions() {
           <CustomDropDown
             title="Sort"
             options={[{ title: "Completed" }, { title: "Pending" }]}
+          />
+          <CustomInput
+            showError={false}
+            placeholder="Search"
+            className="min-w-[20rem] "
           />
         </div>
       </div>

@@ -37,7 +37,7 @@ const CustomInput: React.FC<CustomInputProps> = React.forwardRef(
 
     return (
       <div>
-        <div className="flex flex-col gap-y-2 mb-1">
+        <div className={`flex flex-col gap-y-2 ${showError ? "mb-1" : ""} `}>
           {renderInputLabel(required, label, labelClassName)}
           <div className="relative">
             <input

@@ -1,5 +1,6 @@
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import { UsersTable } from "../../components/tables/users-table";
+import CustomInput from "@/common/components/forms/input";
 
 export default function Users() {
   return (
@@ -13,6 +14,11 @@ export default function Users() {
             { title: "Ghana" },
             { title: "Kenya" },
           ]}
+        />
+        <CustomInput
+          showError={false}
+          placeholder="Search"
+          className="min-w-[20rem]"
         />
       </div>
       <UsersTable />

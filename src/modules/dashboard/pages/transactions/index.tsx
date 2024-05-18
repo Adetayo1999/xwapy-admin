@@ -1,5 +1,6 @@
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import { TransactionGroupTable } from "../../components/tables/transaction-group-table";
+import CustomInput from "@/common/components/forms/input";
 
 export default function Transactions() {
   return (
@@ -18,7 +19,12 @@ export default function Transactions() {
             ]}
           />
         </div>
-        <div className="">
+        <div className="items-center gap-x-8 flex">
+          <CustomInput
+            showError={false}
+            placeholder="Search"
+            className="min-w-[20rem]"
+          />
           <CustomDropDown
             title="Sort"
             options={[{ title: "Completed" }, { title: "Pending" }]}
