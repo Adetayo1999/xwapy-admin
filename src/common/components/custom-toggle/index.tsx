@@ -12,7 +12,7 @@ export const CustomToggle: React.FC<CustomToggleProps> = ({
   ...rest
 }) => {
   return (
-    <label className="inline-flex items-center cursor-pointer">
+    <label className="flex items-center cursor-pointer relative">
       <input type="checkbox" value="" className="sr-only peer" {...rest} />
       <div className="relative w-10 h-5 bg-[#D9D9D9] rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0 after:start-[1px] after:bg-[#F40B0B] peer-checked:after:bg-[#14AD6D] after:rounded-full after:h-5 after:w-5 after:transition-all "></div>
       {label ? (

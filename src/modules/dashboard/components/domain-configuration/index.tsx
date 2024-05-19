@@ -47,7 +47,7 @@ export const DomainConfiguration = () => {
         </div>
         {isCustomDomainActive && !isDomainVerified ? (
           <AnimatePresence>
-            <div className="flex gap-x-5 items-end mb-5 w-[70%]">
+            <div className="flex gap-x-5 items-end mb-5 w-full md:w-[70%]">
               <div className="flex-1">
                 <CustomInput
                   label="Domain name"
@@ -136,7 +136,7 @@ const DomainComponent: React.FC<{
 
   return (
     <div className="flex items-center  gap-x-4">
-      <p className="max-w-[80%] truncate  font-medium text-[#727272]">
+      <p className="max-w-[40%] md:max-w-[80%] truncate  font-medium text-[#727272]">
         {value}
       </p>
       <button

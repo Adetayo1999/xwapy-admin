@@ -5,9 +5,9 @@ import CustomInput from "@/common/components/forms/input";
 export default function Transactions() {
   return (
     <div className="">
-      <div className="mb-8 flex  items-center justify-between">
-        <div className="flex items-center gap-x-10">
-          <h1 className="text-secondary text-3xl font-bold capitalize">
+      <div className="mb-8 flex flex-col md:flex-row gap-y-6 md:gap-y-0  md:items-center justify-between">
+        <div className="flex items-center gap-x-10 justify-between md:justify-start">
+          <h1 className="text-secondary text-2xl md:text-3xl font-bold capitalize">
             Transactions Group
           </h1>
           <CustomDropDown
@@ -19,12 +19,14 @@ export default function Transactions() {
             ]}
           />
         </div>
-        <div className="items-center gap-x-8 flex">
-          <CustomInput
-            showError={false}
-            placeholder="Search"
-            className="min-w-[20rem]"
-          />
+        <div className="items-center gap-x-8 flex justify-between md:justify-start">
+          <div className="flex-1 md:flex-grow-0">
+            <CustomInput
+              showError={false}
+              placeholder="Search"
+              className="md:min-w-[20rem] text-sm"
+            />
+          </div>
           <CustomDropDown
             title="Sort"
             options={[{ title: "Completed" }, { title: "Pending" }]}

@@ -10,7 +10,7 @@ export const PriceConfiguration = () => {
         </h4>
       </div>
       <form>
-        <div className="grid grid-cols-3 gap-y-3 gap-x-6 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-6 mb-4">
           <CustomInput
             labelClassName="text-xs"
             placeholder="e.g 1.5%"

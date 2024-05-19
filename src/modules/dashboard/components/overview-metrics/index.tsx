@@ -2,7 +2,7 @@ import { OverviewMetricsCard } from "../overview-metrics-card";
 
 export const OverviewMetrics = () => {
   const renderMetricsCard = () => (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-col md:flex-row flex-wrap gap-4">
       {METRICS_LIST.map((item) => (
         <OverviewMetricsCard {...item} key={item.id} />
       ))}
@@ -12,7 +12,9 @@ export const OverviewMetrics = () => {
   return (
     <div className="">
       <div className="mb-5">
-        <h1 className="text-secondary text-3xl font-bold">Overview</h1>
+        <h1 className="text-secondary text-2xl md:text-3xl font-bold">
+          Overview
+        </h1>
       </div>
       {renderMetricsCard()}
     </div>

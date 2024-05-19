@@ -28,7 +28,7 @@ export default function ResellerTransactions() {
             </h2>
           </div>
         </div>
-        <div className="flex items-center gap-x-10">
+        <div className="flex md:items-center gap-x-10 flex-col md:flex-row gap-y-6 md:gap-y-0">
           <AnimatedTabs
             tabs={[
               {
@@ -47,15 +47,19 @@ export default function ResellerTransactions() {
               },
             ]}
           />
-          <CustomDropDown
-            title="Sort"
-            options={[{ title: "Completed" }, { title: "Pending" }]}
-          />
-          <CustomInput
-            showError={false}
-            placeholder="Search"
-            className="min-w-[20rem] "
-          />
+          <div className="justify-between md:justify-start flex flex-row-reverse md:flex-row gap-x-6 md:gap-x-10">
+            <CustomDropDown
+              title="Sort"
+              options={[{ title: "Completed" }, { title: "Pending" }]}
+            />
+            <div className="flex-1 md:flex-grow-0">
+              <CustomInput
+                showError={false}
+                placeholder="Search"
+                className="min-w-[20rem] text-sm"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <TransactionGroupTable />

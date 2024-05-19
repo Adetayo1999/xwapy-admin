@@ -9,7 +9,7 @@ export const UserInfo = () => {
           User&apos;s info
         </h2>
       </div>
-      <div className="flex flex-col gap-y-5">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-y-5">
         <SectionComponent title="Full name" children="Charles Avis" />
         <SectionComponent
           title="Email"

@@ -14,18 +14,18 @@ export default function TransactionDetails() {
   return (
     <BaseModal handleClose={handleClose}>
       <div className="pb-6">
-        <div className="mb-10 flex gap-x-20 items-center">
-          <h1 className="font-bold text-2xl text-[#3B3838] ">
+        <div className="mb-10 flex flex-col md:flex-row gap-y-5 md:gap-y-0 gap-x-20 md:items-center">
+          <h1 className="font-bold text-xl md:text-2xl text-[#3B3838] ">
             Transaction Details
           </h1>
-          <div className="flex gap-x-6 items-center">
+          <div className="flex gap-x-6 justify-between md:justify-start items-center">
             <CustomToggle label="User Status" />
             <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
               Inactive
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-10 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-10 mb-4">
           <SectionComponent title="Payer's name" children="Charles Avis" />
           <SectionComponent
             title="Amount"

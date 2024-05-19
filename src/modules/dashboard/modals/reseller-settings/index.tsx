@@ -18,10 +18,10 @@ export default function ResellerSettings() {
   return (
     <BaseModal handleClose={handleClose}>
       <div className="">
-        <div className="flex justify-between">
-          <div className="flex-[0.3]">
+        <div className="flex flex-col md:flex-row gap-y-8 md:gap-y-0 justify-between">
+          <div className="md:flex-[0.3]">
             <div className=" flex justify-between items-center mb-10">
-              <h1 className="font-bold text-2xl text-[#3B3838] ">
+              <h1 className="font-bold text-xl md:text-2xl text-[#3B3838]">
                 Reseller Settings
               </h1>
             </div>
@@ -32,7 +32,7 @@ export default function ResellerSettings() {
             </div>
 
             <div className="flex flex-col gap-y-5">
-              <div className="flex flex-col gap-y-3">
+              <div className="grid grid-cols-2 md:grid-cols-1 gap-y-3">
                 <SectionComponent title="Full name" children="Charles Avis" />
                 <SectionComponent
                   title="Email"
@@ -62,7 +62,7 @@ export default function ResellerSettings() {
                   <div className="grid grid-cols-2 gap-1 mb-2">
                     <CustomColorInput
                       labelClassName="text-xs text-[#5C5C60] "
-                      className="text-sm placeholder:text-sm h-[1.75rem]  "
+                      className="text-sm placeholder:text-sm h-[1.75rem]"
                       label="Primary Color"
                       defaultValue="#6F7290"
                       containerClassName="flex-col gap-y-1 !items-start"
@@ -89,7 +89,7 @@ export default function ResellerSettings() {
               </div>
             </div>
           </div>
-          <div className="flex-[0.65] flex gap-y-10 flex-col">
+          <div className="md:flex-[0.65] flex gap-y-10 flex-col">
             <div className="flex items-center gap-x-6">
               <CustomToggle label="Reseller Status" />
               <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">

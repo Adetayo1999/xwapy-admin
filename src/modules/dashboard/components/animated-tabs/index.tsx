@@ -11,13 +11,13 @@ export function AnimatedTabs({ tabs }: AnimatedTabsProps) {
   const fullUrl = `${location.pathname}${location.search}`;
 
   return (
-    <div className="rounded-full bg-[#D9D9D9] w-fit">
+    <div className="rounded-full bg-[#D9D9D9]  w-fit">
       <div className="flex space-x-1 justify-between md:justify-start ">
         {tabs.map((tab) => (
           <Link
             to={tab.path}
             key={tab.id}
-            className={`relative rounded-full px-3 py-[0.65rem] text-sm font-semibold text-[#000000]  transition  md:w-[9.5rem] flex justify-center`}
+            className={`relative rounded-full px-3 py-[0.65rem] text-sm font-semibold text-[#000000]  transition w-[9.5rem] flex justify-center`}
             style={{
               WebkitTapHighlightColor: "transparent",
             }}

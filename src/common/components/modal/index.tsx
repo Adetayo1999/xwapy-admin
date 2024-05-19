@@ -35,13 +35,13 @@ export const BaseModal: React.FC<BaseModalProps> = ({
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: "0" }}
-          className="h-[75vh] overflow-hidden bg-white w-full flex"
+          className="h-[75vh]  md:overflow-hidden bg-white w-full flex"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex-[0.85] overflow-y-auto flex-shrink-0 py-8 px-16">
+          <div className="md:flex-[0.85] w-full md:w-fit overflow-y-auto flex-shrink-0 py-8 px-8 md:px-16">
             {children}
           </div>
-          <div className="flex-[0.15] border-l border-[#E9E5E5] p-20">
+          <div className="hidden md:block flex-[0.15] border-l border-[#E9E5E5] p-20">
             <div className="mb-20 flex justify-center">
               <Link to="/">
                 <img src={appLogoDark} alt="" className="w-24" />

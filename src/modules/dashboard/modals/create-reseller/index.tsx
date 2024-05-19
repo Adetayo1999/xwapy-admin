@@ -17,13 +17,13 @@ export default function CreateSeller() {
     <BaseModal handleClose={handleClose}>
       <div className="">
         <div className="mb-10">
-          <h1 className="font-bold text-2xl text-[#3B3838] ">
+          <h1 className="font-bold text-xl md:text-2xl text-[#3B3838] ">
             Create a Reseller
           </h1>
         </div>
         <form>
-          <div className="flex justify-between ">
-            <div className="flex-[0.4]">
+          <div className="flex  md:justify-between flex-col md:flex-row gap-y-8 md:gap-y-0 ">
+            <div className="md:flex-[0.4]">
               <div className="mb-4">
                 <h4 className="text-lg text-[#3B3838] font-semibold">
                   Bio Data
@@ -63,7 +63,7 @@ export default function CreateSeller() {
                 />
               </div>
             </div>
-            <div className="flex-[0.4]">
+            <div className="md:flex-[0.4]">
               <div className="mb-4">
                 <h4 className="text-lg text-[#3B3838] font-semibold">
                   Branding
