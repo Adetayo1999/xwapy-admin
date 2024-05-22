@@ -18,7 +18,7 @@ export function Table({ columns, data, loading }: TableProps) {
   if (loading && !data.length) {
     return (
       <div className="min-h-[20rem] max-h-full flex flex-col gap-y-2 justify-center items-center ">
-        <MoonLoader color="#0F3DB4" size={50} />
+        <MoonLoader color="#0F3DB4" size={40} />
         <p className="animate-pulse mt-2 text-sm text-gray-800">Loading...</p>
       </div>
     );
@@ -33,15 +33,21 @@ export function Table({ columns, data, loading }: TableProps) {
         >
           <thead className="text-left">
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps()}
-                    className="pr-[2rem] pb-[1rem] whitespace-nowrap text-[#605F5F] text-sm font-bold"
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                key={headerGroup.getHeaderGroupProps().key}
+              >
+                {headerGroup.headers.map((column) => {
+                  return (
+                    <th
+                      {...column.getHeaderProps()}
+                      key={column.getHeaderProps().key}
+                      className="pr-[2rem] pb-[1rem] whitespace-nowrap text-[#605F5F] text-sm font-bold"
+                    >
+                      {column.render("Header")}
+                    </th>
+                  );
+                })}
               </tr>
             ))}
           </thead>
@@ -49,11 +55,16 @@ export function Table({ columns, data, loading }: TableProps) {
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} className={``}>
+                <tr
+                  {...row.getRowProps()}
+                  key={row.getRowProps().key}
+                  className={``}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <td
                         {...cell.getCellProps()}
+                        key={cell.getCellProps().key}
                         className="pt-4 pb-3 first:pl-5 first:rounded-tl-2xl first:rounded-bl-2xl first:border-l last:pr-9 last:rounded-tr-2xl last:rounded-br-2xl last:border-r px-1   border-y border-[#EBE8FF] text-left whitespace-nowrap    pr-[2rem] text-sm text-[#6F6F6F] font-medium"
                       >
                         {cell.render("Cell")}
@@ -74,7 +85,7 @@ export function Table({ columns, data, loading }: TableProps) {
       {loading && data.length !== 0 && (
         <div className=" transition-all duration-300 absolute backdrop-blur-sm top-0 left-0 w-full h-full flex flex-col items-center">
           <div className="pt-[3rem]">
-            <MoonLoader color="#0F3DB4" size={50} />
+            <MoonLoader color="#0F3DB4" size={40} />
             <p className="animate-pulse mt-2 text-sm text-gray-800">
               Loading...
             </p>

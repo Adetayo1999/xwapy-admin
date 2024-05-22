@@ -1,7 +1,10 @@
 import { CustomToggle } from "@/common/components/custom-toggle";
 import { SectionComponent } from "../section-component";
+import { UserSettingsDataType } from "@/common/types";
 
-export const UserInfo = () => {
+export const UserInfo: React.FC<{
+  user_settings: UserSettingsDataType;
+}> = ({ user_settings }) => {
   return (
     <div className="">
       <div className="mb-6">
@@ -10,13 +13,16 @@ export const UserInfo = () => {
         </h2>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-2 gap-y-5">
-        <SectionComponent title="Full name" children="Charles Avis" />
         <SectionComponent
-          title="Email"
-          children="talktoavischarles@gmail.com"
+          title="Full name"
+          children={user_settings.full_name}
         />
-        <SectionComponent title="Phone" children="08101018131" />
-        <SectionComponent title="Custom domain" children="www.onxwapy.com" />
+        <SectionComponent title="Email" children={user_settings.email} />
+        <SectionComponent title="Phone" children={user_settings.phone} />
+        <SectionComponent
+          title="Custom domain"
+          children={user_settings.custom_domain}
+        />
         <SectionComponent title="KYC-Status">
           <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
             Inactive

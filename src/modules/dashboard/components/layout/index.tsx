@@ -1,14 +1,14 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import appLogoDark from "@/assets/images/xwapy-logo-dark.png";
 
 import { DashboardNav } from "../dashboard-nav";
 import CustomButton from "@/common/components/forms/button";
-import { paths } from "@/common/routes";
 import { useState } from "react";
 import { MobileNavbar } from "@/common/components/mobile-navbar";
+import { clearUserDetails, fetchUserToken } from "@/common/services/storage";
+import { paths } from "@/common/routes";
 
 export const DashboardLayout = () => {
-  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
 
   const handleToggle = () => {
@@ -18,6 +18,15 @@ export const DashboardLayout = () => {
   const handleClose = () => {
     setIsActive(false);
   };
+
+  const handleLogout = () => {
+    clearUserDetails();
+    window.location.reload();
+  };
+
+  if (!fetchUserToken()) {
+    return <Navigate to={paths.auth.login} />;
+  }
 
   return (
     <>
@@ -38,7 +47,7 @@ export const DashboardLayout = () => {
             <div className="flex items-center gap-x-6">
               <CustomButton
                 className="text-gray-50 bg-red-500 w-fit text-sm !py-2 !px-6 "
-                onClick={() => navigate(paths.auth.login)}
+                onClick={handleLogout}
               >
                 Logout
               </CustomButton>

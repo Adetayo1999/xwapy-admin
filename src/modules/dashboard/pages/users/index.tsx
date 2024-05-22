@@ -1,8 +1,17 @@
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import { UsersTable } from "../../components/tables/users-table";
 import CustomInput from "@/common/components/forms/input";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useEffect } from "react";
+import { getUsersThunk } from "@/common/store/reducers/users/thunk";
 
 export default function Users() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getUsersThunk({}));
+  }, [dispatch]);
+
   return (
     <div className="">
       <div className="mb-8 flex gap-y-6 md:gap-y-0 flex-col md:flex-row  gap-x-10 md:items-center">

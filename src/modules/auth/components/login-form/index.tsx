@@ -1,6 +1,9 @@
 import CustomButton from "@/common/components/forms/button";
 import CustomInput from "@/common/components/forms/input";
+import { toastError } from "@/common/helpers/error";
 import { paths } from "@/common/routes";
+import { requests } from "@/common/services/requests";
+import { storeUserToken } from "@/common/services/storage";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,14 +15,20 @@ interface LoginFormType {
 export const LoginForm = () => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<LoginFormType>();
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginFormType> = () => {
-    navigate(paths.dashboard.overview);
+  const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
+    try {
+      const response = await requests.login(data);
+      storeUserToken(response.data.token);
+      navigate(paths.dashboard.overview);
+    } catch (error) {
+      toastError(error);
+    }
   };
 
   return (
@@ -44,7 +53,10 @@ export const LoginForm = () => {
           </div>
         </div>
 
-        <CustomButton className="px-[4.188rem] py-3 w-fit text-sm rounded-xl">
+        <CustomButton
+          className="px-[4.188rem] py-3 w-fit text-sm rounded-xl"
+          isloading={isSubmitting}
+        >
           Login
         </CustomButton>
       </form>

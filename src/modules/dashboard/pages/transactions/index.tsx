@@ -1,8 +1,17 @@
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import { TransactionGroupTable } from "../../components/tables/transaction-group-table";
 import CustomInput from "@/common/components/forms/input";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useEffect } from "react";
+import { getTransactionsGroupThunk } from "@/common/store/reducers/transactions-group/thunk";
 
 export default function Transactions() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getTransactionsGroupThunk({}));
+  }, [dispatch]);
+
   return (
     <div className="">
       <div className="mb-8 flex flex-col md:flex-row gap-y-6 md:gap-y-0  md:items-center justify-between">
