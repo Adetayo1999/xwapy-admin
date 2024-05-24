@@ -22,7 +22,9 @@ export default function Resellers() {
           </div>
           <CustomButton
             className="bg-primary text-[#000000] px-6 md:px-10 w-fit text-sm py-2 !rounded-2xl"
-            onClick={() => navigate(paths.dashboard.modals.create_reseller)}
+            onClick={() =>
+              navigate(paths.dashboard.admin.modals.create_reseller)
+            }
           >
             Create Reseller
           </CustomButton>
