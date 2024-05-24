@@ -25,7 +25,7 @@ export const LoginForm = () => {
     try {
       const response = await requests.login(data);
       storeUserToken(response.data.token);
-      navigate(paths.dashboard.overview);
+      navigate(paths.dashboard.resellers.overview);
     } catch (error) {
       toastError(error);
     }

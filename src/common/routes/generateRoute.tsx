@@ -2,30 +2,60 @@ import { Route } from "react-router-dom";
 import { IModalRoute, IRoute } from "../types";
 import { Suspense } from "react";
 import AuthLayout from "@/modules/auth/components/layout";
-import { DashboardLayout } from "@/modules/dashboard/components/layout";
 import { SuspenseLoader } from "../components/suspense-loader";
+import { defaultRoles } from "../helpers/app-roles";
+import { AdminLayout } from "@/modules/admin/components/layout";
+import { ResellerLayout } from "@/modules/reseller/components/layout";
 
-export const generateRoute = ({ path, Component, access }: IRoute) => {
-  return (
-    <Route
-      key={`${path}`}
-      element={access === "guest-only" ? <AuthLayout /> : <DashboardLayout />}
-    >
+const role = defaultRoles.reseller;
+
+export const generateRoute = ({
+  path,
+  Component,
+  access,
+  allowedRoles,
+}: IRoute) => {
+  if (access === "guest-only") {
+    return (
+      <Route key={`${path}`} element={<AuthLayout />}>
+        <Route
+          path={path}
+          element={
+            <Suspense fallback={<SuspenseLoader />}>
+              <Component />
+            </Suspense>
+          }
+        />
+      </Route>
+    );
+  }
+
+  if (allowedRoles?.length && allowedRoles.includes(role)) {
+    return (
       <Route
-        path={path}
+        key={`${path}`}
         element={
-          <Suspense fallback={<SuspenseLoader />}>
-            <Component />
-          </Suspense>
+          role === defaultRoles.admin ? <AdminLayout /> : <ResellerLayout />
         }
-      />
-    </Route>
-  );
+      >
+        <Route
+          path={path}
+          element={
+            <Suspense fallback={<SuspenseLoader />}>
+              <Component />
+            </Suspense>
+          }
+        />
+      </Route>
+    );
+  }
 };
 
 export const generateModalRoute = ({
   component: Component,
   path,
+  allowedRole,
 }: IModalRoute) => {
-  return <Route key={path} element={<Component />} path={path} />;
+  if (allowedRole === role)
+    return <Route key={path} element={<Component />} path={path} />;
 };

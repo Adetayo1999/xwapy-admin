@@ -1,38 +1,23 @@
-import { Link, NavLink } from "react-router-dom";
-import appLogoDark from "@/assets/images/xwapy-logo-dark.png";
+import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { paths } from "@/common/routes";
+import { Link, NavLink } from "react-router-dom";
 
 interface MobileNavbarProps {
   isActive: boolean;
   handleClose: VoidFunction;
+  navs: { id: number; name: string; path: string }[];
+  logo: string;
+  hasSettings?: boolean;
 }
 
 export const MobileNavbar: React.FC<MobileNavbarProps> = ({
   isActive,
   handleClose,
+  navs,
+  logo,
+  hasSettings,
 }) => {
-  const DASHBOARD_NAV = [
-    {
-      id: 1,
-      name: "Overview",
-      path: paths.dashboard.overview,
-    },
-    {
-      id: 2,
-      name: "Sellers",
-      path: paths.dashboard.resellers,
-    },
-    {
-      id: 3,
-      name: "Transactions",
-      path: paths.dashboard.transactions,
-    },
-    {
-      id: 4,
-      name: "Users",
-      path: paths.dashboard.users,
-    },
-  ];
+  const navigate = useModalNavigate();
 
   return (
     <div
@@ -50,10 +35,10 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <Link to="/" className="flex items-center mb-10" onClick={handleClose}>
-          <img src={appLogoDark} alt="Xwapy logo" className="w-28 " />
+          <img src={logo} alt="Xwapy logo" className="w-28 " />
         </Link>
         <ul className="flex flex-col gap-y-8">
-          {DASHBOARD_NAV.map(({ id, name, path }) => (
+          {navs.map(({ id, name, path }) => (
             <li
               className="w-full flex items-center transition duration-200 "
               key={id}
@@ -71,6 +56,19 @@ export const MobileNavbar: React.FC<MobileNavbarProps> = ({
               </NavLink>
             </li>
           ))}
+          {hasSettings ? (
+            <li className="w-full flex items-center transition duration-200 ">
+              <button
+                className="font-semibold text-base text-[#656363]"
+                onClick={() => {
+                  navigate(paths.dashboard.resellers.modals.reseller_settings);
+                  handleClose();
+                }}
+              >
+                Settings
+              </button>
+            </li>
+          ) : null}
         </ul>
       </nav>
     </div>
