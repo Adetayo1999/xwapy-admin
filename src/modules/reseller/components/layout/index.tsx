@@ -1,5 +1,5 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
-import appLogoLight from "@/assets/images/xwapy-logo-light.png";
+import appLogoLight from "@/assets/images/xwapy-logo-yellow.png";
 import appLogoDark from "@/assets/images/xwapy-logo-dark.png";
 import CustomButton from "@/common/components/forms/button";
 import { useState } from "react";
