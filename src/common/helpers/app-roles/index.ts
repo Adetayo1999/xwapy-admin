@@ -1,4 +1,4 @@
 export const defaultRoles = {
-  admin: "ADMIN",
-  reseller: "RESELLER",
+  admin: "admin",
+  reseller: "reseller",
 };

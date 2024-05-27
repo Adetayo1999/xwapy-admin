@@ -71,8 +71,8 @@ export type SaveSellerSettingsRequestBodyType = {
   on_ramp_fee_percent: string;
   off_ramp_fee_percent: string;
   fuspay_intrapay_merchant_id: string;
-  xwap_on_ramp_fee_percent: string;
-  xwap_off_ramp_fee_percent: string;
+  xwap_on_ramp_fee_percent?: string;
+  xwap_off_ramp_fee_percent?: string;
 };
 
 export type SaveSellerSettingsRequestType = Partial<{

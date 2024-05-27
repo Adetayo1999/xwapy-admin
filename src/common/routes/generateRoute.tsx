@@ -6,8 +6,7 @@ import { SuspenseLoader } from "../components/suspense-loader";
 import { defaultRoles } from "../helpers/app-roles";
 import { AdminLayout } from "@/modules/admin/components/layout";
 import { ResellerLayout } from "@/modules/reseller/components/layout";
-
-const role = defaultRoles.reseller;
+import { fetchUserRole } from "../services/storage";
 
 export const generateRoute = ({
   path,
@@ -15,6 +14,8 @@ export const generateRoute = ({
   access,
   allowedRoles,
 }: IRoute) => {
+  const role = fetchUserRole();
+
   if (access === "guest-only") {
     return (
       <Route key={`${path}`} element={<AuthLayout />}>
@@ -56,6 +57,8 @@ export const generateModalRoute = ({
   path,
   allowedRole,
 }: IModalRoute) => {
+  const role = fetchUserRole();
+
   if (allowedRole === role)
     return <Route key={path} element={<Component />} path={path} />;
 };

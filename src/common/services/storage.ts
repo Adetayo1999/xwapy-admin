@@ -24,3 +24,11 @@ export const storeUserToken = (token: string) => {
 export const fetchUserToken = () => {
   return getItem(STORAGE_KEYS.CLIENT_TOKEN_STORAGE_KEY);
 };
+
+export const storeUserRole = (type: "admin" | "reseller") => {
+  return setItem(STORAGE_KEYS.CLIENT_USER_STORAGE_KEY, type);
+};
+
+export const fetchUserRole = () => {
+  return getItem(STORAGE_KEYS.CLIENT_USER_STORAGE_KEY);
+};

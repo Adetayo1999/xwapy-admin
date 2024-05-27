@@ -1,6 +1,7 @@
 import CustomButton from "@/common/components/forms/button";
 import CustomInput from "@/common/components/forms/input";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { fetchUserRole } from "@/common/services/storage";
 import { SaveSellerSettingsRequestBodyType } from "@/common/services/types";
 import { saveResellerSettingsThunk } from "@/common/store/reducers/resellers/thunk";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -19,7 +20,11 @@ export const PriceConfiguration = () => {
     data
   ) => {
     try {
-      await dispatch(saveResellerSettingsThunk({ ...data })).unwrap();
+      const filteredData = Object.fromEntries(
+        Object.entries(data).filter(([, value]) => value !== "")
+      ) as SaveSellerSettingsRequestBodyType;
+
+      await dispatch(saveResellerSettingsThunk({ ...filteredData })).unwrap();
       toast.success("Reseller details saved successfully");
       reset();
     } catch (error) {
@@ -60,22 +65,26 @@ export const PriceConfiguration = () => {
             {...register("fuspay_intrapay_merchant_id", { required: true })}
             error={errors.fuspay_intrapay_merchant_id}
           />
-          <CustomInput
-            labelClassName="text-xs"
-            placeholder="e.g 1.5%"
-            className="text-sm placeholder:text-sm"
-            label="Xwapy onramp Fee"
-            {...register("xwap_on_ramp_fee_percent", { required: true })}
-            error={errors.xwap_on_ramp_fee_percent}
-          />
-          <CustomInput
-            labelClassName="text-xs"
-            placeholder="e.g 1.5%"
-            className="text-sm placeholder:text-sm"
-            label="Xwapy offramp Fee"
-            {...register("xwap_off_ramp_fee_percent", { required: true })}
-            error={errors.xwap_off_ramp_fee_percent}
-          />
+          {fetchUserRole() === "admin" ? (
+            <>
+              <CustomInput
+                labelClassName="text-xs"
+                placeholder="e.g 1.5%"
+                className="text-sm placeholder:text-sm"
+                label="Xwapy onramp Fee"
+                {...register("xwap_on_ramp_fee_percent", { required: true })}
+                error={errors.xwap_on_ramp_fee_percent}
+              />
+              <CustomInput
+                labelClassName="text-xs"
+                placeholder="e.g 1.5%"
+                className="text-sm placeholder:text-sm"
+                label="Xwapy offramp Fee"
+                {...register("xwap_off_ramp_fee_percent", { required: true })}
+                error={errors.xwap_off_ramp_fee_percent}
+              />
+            </>
+          ) : null}
         </div>
         <CustomButton
           className="h-fit w-fit rounded-xl py-2 px-8 text-sm"

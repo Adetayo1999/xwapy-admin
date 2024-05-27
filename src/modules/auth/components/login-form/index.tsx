@@ -3,9 +3,9 @@ import CustomInput from "@/common/components/forms/input";
 import { toastError } from "@/common/helpers/error";
 import { paths } from "@/common/routes";
 import { requests } from "@/common/services/requests";
-import { storeUserToken } from "@/common/services/storage";
+import { storeUserRole, storeUserToken } from "@/common/services/storage";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 interface LoginFormType {
   email: string;
@@ -13,6 +13,9 @@ interface LoginFormType {
 }
 
 export const LoginForm = () => {
+  const [searchParams] = useSearchParams();
+  const loginType = searchParams.get("type");
+
   const {
     register,
     formState: { errors, isSubmitting },
@@ -25,7 +28,14 @@ export const LoginForm = () => {
     try {
       const response = await requests.login(data);
       storeUserToken(response.data.token);
-      navigate(paths.dashboard.resellers.overview);
+
+      if (loginType === "reseller") {
+        storeUserRole("reseller");
+        navigate(paths.dashboard.resellers.overview);
+      } else {
+        storeUserRole("admin");
+        navigate(paths.dashboard.admin.overview);
+      }
     } catch (error) {
       toastError(error);
     }
@@ -33,7 +43,10 @@ export const LoginForm = () => {
 
   return (
     <div className="">
-      <form className="flex flex-col gap-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-y-5 mb-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <CustomInput
           label="Enter Email"
           {...register("email", { required: true })}
@@ -60,6 +73,20 @@ export const LoginForm = () => {
           Login
         </CustomButton>
       </form>
+      <div className="">
+        {loginType === "reseller" ? (
+          <Link to={paths.auth.login} className="text-sm underline">
+            Login to Xwapy admin
+          </Link>
+        ) : (
+          <Link
+            to={paths.auth.login + "?type=reseller"}
+            className="text-sm underline"
+          >
+            Login to Reseller admin
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
