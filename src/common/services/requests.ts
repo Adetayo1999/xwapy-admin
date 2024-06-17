@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   makeAuthorizedRequestWithHeadersAndPayload,
   makeUnauthorizedRequestWithHeadersAndPayload,
@@ -13,6 +14,11 @@ export const requests = {
 
   getOverview(): Promise<tp.GetOverviewResponseType> {
     const { method, url } = endpoints.get_overview;
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url);
+  },
+
+  getUser() {
+    const { method, url } = endpoints.get_user_data;
     return makeAuthorizedRequestWithHeadersAndPayload(method, url);
   },
 
@@ -75,6 +81,25 @@ export const requests = {
     const { method, url } = endpoints.get_user_settings;
     const query = queryHandler({ ...data });
 
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
+  },
+
+  uploadFile(data: tp.UploadFileRequestType) {
+    return axios({
+      method: endpoints.upload_file.method,
+      url: endpoints.upload_file.url,
+      data,
+    });
+  },
+
+  addDataToStore(data: tp.AddToDataStoreRequestBodyType) {
+    const { method, url } = endpoints.add_to_datastore;
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url, data);
+  },
+
+  getFromDataStore(data: tp.getFromDataStoreRequestType) {
+    const { method, url } = endpoints.get_from_data;
+    const query = queryHandler({ ...data });
     return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
 };

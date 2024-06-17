@@ -24,10 +24,11 @@ function CustomButton({
         type={type}
         onClick={onClick}
         className={clsx(
-          "flex cursor-pointer items-center justify-center gap-x-1  rounded-lg py-3 px-12 font-semibold disabled:cursor-not-allowed disabled:bg-slate-200",
+          "flex cursor-pointer items-center justify-center gap-x-1  rounded-lg py-3 px-12 font-semibold disabled:cursor-not-allowed disabled:bg-opacity-40",
           variant
             ? "border border-solid border-primary bg-white text-primary"
             : "bg-primary text-[#000000]",
+          isloading && "animate-pulse",
           className
         )}
       >

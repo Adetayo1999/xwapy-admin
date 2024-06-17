@@ -35,6 +35,7 @@ export const BaseModal: React.FC<BaseModalProps> = ({
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: "0" }}
+          exit={{ y: "100%" }}
           className="h-[75vh]  md:overflow-hidden bg-white w-full flex"
           onClick={(e) => e.stopPropagation()}
         >

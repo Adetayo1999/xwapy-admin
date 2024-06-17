@@ -39,4 +39,20 @@ export const endpoints = {
     method: "GET",
     url: (query: string) => `/GetUserSetting/${query}`,
   },
+  upload_file: {
+    method: "POST",
+    url: "https://workspace-stagging-api.fuspay.finance/obtain_file_url/",
+  },
+  add_to_datastore: {
+    method: "POST",
+    url: "SetDataStore",
+  },
+  get_from_data: {
+    method: "GET",
+    url: (query: string) => `/GetDataStore${query}`,
+  },
+  get_user_data: {
+    method: "GET",
+    url: "/UserData",
+  },
 };

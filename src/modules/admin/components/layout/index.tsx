@@ -1,14 +1,17 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import appLogoDark from "@/assets/images/xwapy-logo-dark.png";
 import CustomButton from "@/common/components/forms/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearUserDetails, fetchUserToken } from "@/common/services/storage";
 import { paths } from "@/common/routes";
 import { Sidebar } from "@/common/components/sidebar";
 import { MobileNavbar } from "@/common/components/mobile-navbar";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { getUserThunk } from "@/common/store/reducers/userdata/thunk";
 
 export const AdminLayout = () => {
   const [isActive, setIsActive] = useState(false);
+  const dispatch = useAppDispatch();
 
   const navs = [
     {
@@ -41,6 +44,11 @@ export const AdminLayout = () => {
     clearUserDetails();
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (!fetchUserToken()) return;
+    dispatch(getUserThunk());
+  }, [dispatch]);
 
   if (!fetchUserToken()) {
     return <Navigate to={paths.auth.login} />;

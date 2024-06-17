@@ -72,3 +72,10 @@ export interface UserSettingsDataType {
   avg_txn: string;
   date_joined: string;
 }
+
+export interface UserType {
+  email: string;
+  first_name: string;
+  last_name: string;
+  sub_domain: string;
+}

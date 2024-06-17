@@ -105,3 +105,18 @@ export type GetUsersSettingsRequestType = {
 
 export type GetUsersSettingsResponseType =
   APIResponseSuccessModel<UserSettingsDataType>;
+
+export type UploadFileRequestType = {
+  file_name: string;
+  base64_data: string;
+};
+
+export type AddToDataStoreRequestBodyType = {
+  key_name: string;
+  key_value: string;
+  meta_data: string;
+};
+
+export type getFromDataStoreRequestType = {
+  key_name: string;
+};

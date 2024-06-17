@@ -2,16 +2,19 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import appLogoLight from "@/assets/images/xwapy-logo-yellow.png";
 import appLogoDark from "@/assets/images/xwapy-logo-dark.png";
 import CustomButton from "@/common/components/forms/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearUserDetails, fetchUserToken } from "@/common/services/storage";
 import { paths } from "@/common/routes";
 import { Sidebar } from "@/common/components/sidebar";
 import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { MobileNavbar } from "@/common/components/mobile-navbar";
+import { getUserThunk } from "@/common/store/reducers/userdata/thunk";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 
 export const ResellerLayout = () => {
   const modalNavigate = useModalNavigate();
   const [isActive, setIsActive] = useState(false);
+  const dispatch = useAppDispatch();
 
   const navs = [
     {
@@ -39,6 +42,11 @@ export const ResellerLayout = () => {
     clearUserDetails();
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (!fetchUserToken()) return;
+    dispatch(getUserThunk());
+  }, [dispatch]);
 
   if (!fetchUserToken()) {
     return <Navigate to={paths.auth.login} />;

@@ -12,6 +12,28 @@ import { MoonLoader } from "react-spinners";
 import { SectionComponent } from "@/common/components/section-component";
 import { PriceConfiguration } from "@/common/components/price-configuration";
 import { DomainConfiguration } from "@/common/components/domain-configuration";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { requests } from "@/common/services/requests";
+import { toastError } from "@/common/helpers/error";
+import { FileRejection } from "react-dropzone";
+import toast from "react-hot-toast";
+
+interface BrandingFormType {
+  text_color: string;
+  background_color: string;
+  button_bg_color: string;
+  button_text_color: string;
+  box_bg_color_1: string;
+  box_bg_color_2: string;
+  header_color: string;
+  header_active_color: string;
+}
+
+type BrandingImageTypes =
+  | "favicon"
+  | "support_icon"
+  | "app_logo"
+  | "splash_screen";
 
 export default function ResellerSettings() {
   const navigate = useNavigate();
@@ -20,6 +42,30 @@ export default function ResellerSettings() {
   const [resellerSetting, setResellerSetting] =
     useState<ResellerSettingsDataType | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<BrandingFormType>();
+
+  const [images, setImages] = useState<{
+    [key in BrandingImageTypes]: string;
+  }>({
+    app_logo: "",
+    favicon: "",
+    splash_screen: "",
+    support_icon: "",
+  });
+
+  const [loadingImages, setLoadingImages] = useState<{
+    [key in BrandingImageTypes]: boolean;
+  }>({
+    app_logo: false,
+    favicon: false,
+    splash_screen: false,
+    support_icon: false,
+  });
 
   const handleClose = useCallback(() => {
     navigate(-1);
@@ -41,6 +87,73 @@ export default function ResellerSettings() {
       }
     })();
   }, [dispatch, id, handleClose]);
+
+  const handleSaveUserBranding: SubmitHandler<BrandingFormType> = async (
+    values
+  ) => {
+    if (!resellerSetting) return;
+
+    try {
+      const requestData = JSON.stringify({
+        ...values,
+        ...images,
+      });
+
+      await requests.addDataToStore({
+        meta_data: requestData,
+        key_value: "Description of the app branding",
+        key_name: `${resellerSetting.custom_domain}_branding`,
+      });
+
+      toast.success("Reseller settings saved");
+    } catch (error: any) {
+      toastError(error.message || "Something went wrong...");
+    }
+  };
+
+  const toBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        if (typeof reader.result === "string") resolve(reader.result);
+      };
+      reader.onerror = reject;
+    });
+
+  const onImageDrop = async (
+    files: File[],
+    rejectedFiles: FileRejection[],
+    file_key: BrandingImageTypes
+  ) => {
+    rejectedFiles.forEach((rejectedFile) => {
+      const { file, errors } = rejectedFile;
+      errors.forEach((error) => {
+        if (error.code === "file-invalid-type") {
+          toastError(`File format not accepted: ${file.type}`);
+        } else if (error.code === "file-too-large") {
+          toastError(`File is too large: ${(file.size / 1024).toFixed(2)} KB`);
+        }
+      });
+    });
+
+    if (files.length > 0) {
+      try {
+        setLoadingImages((prev) => ({ ...prev, [file_key]: true }));
+        const base64_data = await toBase64(files[0]);
+        const response = await requests.uploadFile({
+          base64_data,
+          file_name: files[0].name,
+        });
+
+        setImages((prev) => ({ ...prev, [file_key]: response.data.url }));
+      } catch (error: any) {
+        toastError(error?.message || "Something went wrong");
+      } finally {
+        setLoadingImages((prev) => ({ ...prev, [file_key]: false }));
+      }
+    }
+  };
 
   return (
     <BaseModal handleClose={handleClose}>
@@ -81,48 +194,241 @@ export default function ResellerSettings() {
                   />
                   <SectionComponent
                     title="Custom domain"
-                    children="www.onxwapy.com"
+                    children={resellerSetting.custom_domain}
+                  />
+                  <SectionComponent
+                    title="Mapped Sub-domain"
+                    children={resellerSetting.custom_domain}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-x-4">
-                  <div className="bg-gray-100 rounded-md"></div>
-                  <div className="">
-                    <Dropzone
-                      name="reseller_logo"
-                      accept={{
-                        "application/pdf": [".pdf"],
-                      }}
-                      className="w-full"
-                      showText={false}
-                    />
-                  </div>
-                </div>
                 <div className="">
-                  <form>
+                  <div className="mb-5">
+                    <h4 className="text-lg text-[#3B3838] font-semibold">
+                      Branding configuration
+                    </h4>
+                  </div>
+                  <form
+                    onSubmit={handleSubmit(handleSaveUserBranding)}
+                    className="flex flex-col gap-y-3"
+                  >
                     <div className="grid grid-cols-2 gap-1 mb-2">
                       <CustomColorInput
                         labelClassName="text-xs text-[#5C5C60] "
                         className="text-sm placeholder:text-sm h-[1.75rem]"
-                        label="Primary Color"
-                        defaultValue={resellerSetting.primary_color}
-                        containerClassName="flex-col gap-y-1 !items-start"
-                      />
-                      <CustomColorInput
-                        labelClassName="text-xs text-[#5C5C60]"
-                        className="text-sm placeholder:text-sm h-[1.75rem] "
-                        label="Secondary Color"
-                        defaultValue={resellerSetting.secondary_color}
-                        containerClassName="flex-col gap-y-1 !items-start"
-                      />
-                      <CustomColorInput
-                        labelClassName="text-xs text-[#5C5C60]"
-                        className="text-sm placeholder:text-sm h-[1.75rem] "
                         label="Text Color"
-                        defaultValue={resellerSetting.text_color}
+                        {...register("text_color", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60]"
+                        className="text-sm placeholder:text-sm h-[1.75rem] "
+                        label="Background Color"
+                        {...register("background_color", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60]"
+                        className="text-sm placeholder:text-sm h-[1.75rem] "
+                        label="Button Color 1"
+                        {...register("button_bg_color", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60] "
+                        className="text-sm placeholder:text-sm h-[1.75rem]"
+                        label="Button Text Color"
+                        {...register("button_text_color", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60]"
+                        className="text-sm placeholder:text-sm h-[1.75rem] "
+                        label="Box BG Color 1"
+                        {...register("box_bg_color_1", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60]"
+                        className="text-sm placeholder:text-sm h-[1.75rem] "
+                        label="Box BG Color 2"
+                        {...register("box_bg_color_2", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60] "
+                        className="text-sm placeholder:text-sm h-[1.75rem]"
+                        label="Header Color"
+                        {...register("header_color", { required: true })}
+                        containerClassName="flex-col gap-y-1 !items-start"
+                      />
+                      <CustomColorInput
+                        labelClassName="text-xs text-[#5C5C60]"
+                        className="text-sm placeholder:text-sm h-[1.75rem] "
+                        label="Header Active Color"
+                        {...register("header_active_color", { required: true })}
                         containerClassName="flex-col gap-y-1 !items-start"
                       />
                     </div>
-                    <CustomButton className="w-fit rounded-xl py-2 px-6 text-sm">
+                    <div className="mb-3 flex flex-col gap-y-4">
+                      <div className="flex flex-col gap-y-1">
+                        <h5 className="text-sm font-semibold text-[#000000]">
+                          Suport Icon
+                        </h5>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                            {images.support_icon ? (
+                              <img
+                                src={images.support_icon}
+                                alt=""
+                                className="w-full h-full object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="">
+                            <Dropzone
+                              name="support_icon"
+                              accept={{
+                                "image/png": [".png"],
+                                "image/jpeg": [".jpeg"],
+                                "image/jpg": [".jpg"],
+                              }}
+                              onDrop={(files, rejectedFiles) =>
+                                onImageDrop(
+                                  files,
+                                  rejectedFiles,
+                                  "support_icon"
+                                )
+                              }
+                              className="w-full"
+                              showText={false}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-xs text-[#B7B2B2]">
+                          Dimension: 2 x 1
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-y-1">
+                        <h5 className="text-sm font-semibold text-[#000000]">
+                          Favicon
+                        </h5>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                            {images.favicon ? (
+                              <img
+                                src={images.favicon}
+                                alt=""
+                                className="w-full h-full object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="">
+                            <Dropzone
+                              name="favicon"
+                              accept={{
+                                "image/ico": [".ico"],
+                                "image/jpeg": [".jpeg"],
+                                "image/jpg": [".jpg"],
+                              }}
+                              onDrop={(files, rejectedFiles) =>
+                                onImageDrop(files, rejectedFiles, "favicon")
+                              }
+                              className="w-full"
+                              showText={false}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-y-1">
+                        <h5 className="text-sm font-semibold text-[#000000]">
+                          App Logo
+                        </h5>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                            {images.app_logo ? (
+                              <img
+                                src={images.app_logo}
+                                alt=""
+                                className="w-full h-full object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="">
+                            <Dropzone
+                              name="app_logo"
+                              accept={{
+                                "image/png": [".png"],
+                                "image/jpeg": [".jpeg"],
+                                "image/jpg": [".jpg"],
+                              }}
+                              onDrop={(files, rejectedFiles) =>
+                                onImageDrop(files, rejectedFiles, "app_logo")
+                              }
+                              className="w-full"
+                              showText={false}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-xs text-[#B7B2B2]">
+                          Dimension: 2 x 1
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-y-1">
+                        <h5 className="text-sm font-semibold text-[#000000]">
+                          Splash Screen
+                        </h5>
+                        <div className="grid grid-cols-2 gap-x-4">
+                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                            {images.splash_screen ? (
+                              <img
+                                src={images.splash_screen}
+                                alt=""
+                                className="w-full h-full object-cover"
+                              />
+                            ) : null}
+                          </div>
+                          <div className="">
+                            <Dropzone
+                              name="splash_screen"
+                              accept={{
+                                "image/png": [".png"],
+                                "image/jpeg": [".jpeg"],
+                                "image/jpg": [".jpg"],
+                              }}
+                              onDrop={(files, rejectedFiles) =>
+                                onImageDrop(
+                                  files,
+                                  rejectedFiles,
+                                  "splash_screen"
+                                )
+                              }
+                              className="w-full"
+                              showText={false}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-xs text-[#B7B2B2]">
+                          Dimension: 2 x 1
+                        </p>
+                      </div>
+                    </div>
+
+                    {Object.values(loadingImages).some(
+                      (image) => image === true
+                    ) ? (
+                      <p className="text-xs text-[#F40B0B]  italic font-medium">
+                        Uploading images...
+                      </p>
+                    ) : null}
+
+                    <CustomButton
+                      className="w-fit rounded-xl py-2 px-6 text-sm"
+                      disabled={
+                        isSubmitting ||
+                        Object.values(images).some((image) => image === "")
+                      }
+                      isloading={isSubmitting}
+                    >
                       Save
                     </CustomButton>
                   </form>
