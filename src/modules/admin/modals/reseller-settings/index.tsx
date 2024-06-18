@@ -111,12 +111,16 @@ export default function ResellerSettings() {
     }
   };
 
+  const getBase64StringFromDataURL = (dataURL: string) =>
+    dataURL.replace("data:", "").replace(/^.+,/, "");
+
   const toBase64 = (file: File) =>
     new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        if (typeof reader.result === "string") resolve(reader.result);
+        if (typeof reader.result === "string")
+          resolve(getBase64StringFromDataURL(reader.result));
       };
       reader.onerror = reject;
     });
@@ -275,12 +279,12 @@ export default function ResellerSettings() {
                           Suport Icon
                         </h5>
                         <div className="grid grid-cols-2 gap-x-4">
-                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                          <div className="bg-gray-100 flex justify-center items-center rounded-md overflow-hidden h-[6.8rem] w-full">
                             {images.support_icon ? (
                               <img
                                 src={images.support_icon}
                                 alt=""
-                                className="w-full h-full object-cover"
+                                className=" h-full w-full object-contain"
                               />
                             ) : null}
                           </div>
@@ -313,12 +317,12 @@ export default function ResellerSettings() {
                           Favicon
                         </h5>
                         <div className="grid grid-cols-2 gap-x-4">
-                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                          <div className="bg-gray-100 flex justify-center items-center rounded-md overflow-hidden h-[6.8rem] w-full">
                             {images.favicon ? (
                               <img
                                 src={images.favicon}
                                 alt=""
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                               />
                             ) : null}
                           </div>
@@ -344,12 +348,12 @@ export default function ResellerSettings() {
                           App Logo
                         </h5>
                         <div className="grid grid-cols-2 gap-x-4">
-                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                          <div className="bg-gray-100 flex justify-center items-center rounded-md overflow-hidden h-[6.8rem] w-full">
                             {images.app_logo ? (
                               <img
                                 src={images.app_logo}
                                 alt=""
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                               />
                             ) : null}
                           </div>
@@ -378,12 +382,12 @@ export default function ResellerSettings() {
                           Splash Screen
                         </h5>
                         <div className="grid grid-cols-2 gap-x-4">
-                          <div className="bg-gray-100 rounded-md overflow-hidden">
+                          <div className="bg-gray-100 flex justify-center items-center rounded-md overflow-hidden h-[6.8rem] w-full">
                             {images.splash_screen ? (
                               <img
                                 src={images.splash_screen}
                                 alt=""
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                               />
                             ) : null}
                           </div>
