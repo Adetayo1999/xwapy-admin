@@ -37,7 +37,7 @@ export const ResellerTable = () => {
   );
 
   useEffect(() => {
-    dispatch(getResellersThunk());
+    dispatch(getResellersThunk({ type: "admin" }));
   }, [dispatch]);
 
   return (

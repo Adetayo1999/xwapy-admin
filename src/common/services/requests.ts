@@ -12,14 +12,16 @@ export const requests = {
     return makeUnauthorizedRequestWithHeadersAndPayload(method, url, data);
   },
 
-  getOverview(): Promise<tp.GetOverviewResponseType> {
+  getOverview(data: tp.BaseRequestType): Promise<tp.GetOverviewResponseType> {
     const { method, url } = endpoints.get_overview;
-    return makeAuthorizedRequestWithHeadersAndPayload(method, url);
+    const query = queryHandler({ ...data });
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
 
-  getUser() {
+  getUser(data: tp.BaseRequestType) {
     const { method, url } = endpoints.get_user_data;
-    return makeAuthorizedRequestWithHeadersAndPayload(method, url);
+    const query = queryHandler({ ...data });
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
 
   listTransactions(
@@ -32,9 +34,10 @@ export const requests = {
     return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
 
-  getResellers(): Promise<tp.GetResellersResponseType> {
+  getResellers(data: tp.BaseRequestType): Promise<tp.GetResellersResponseType> {
     const { method, url } = endpoints.get_sellers;
-    return makeAuthorizedRequestWithHeadersAndPayload(method, url);
+    const query = queryHandler({ ...data });
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
 
   getResellerSettings(

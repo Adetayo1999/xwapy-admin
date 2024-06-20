@@ -77,7 +77,7 @@ export default function ResellerSettings() {
       try {
         setLoading(true);
         const response = await dispatch(
-          getResellerSettingsThunk({ user_reference: id })
+          getResellerSettingsThunk({ user_reference: id, type: "admin" })
         ).unwrap();
         setResellerSetting(response);
       } catch (error) {
@@ -103,6 +103,7 @@ export default function ResellerSettings() {
         meta_data: requestData,
         key_value: "Description of the app branding",
         key_name: `${resellerSetting.custom_domain}_branding`,
+        type: "admin",
       });
 
       toast.success("Reseller settings saved");
@@ -447,7 +448,7 @@ export default function ResellerSettings() {
                 </button>
               </div>
               <DomainConfiguration />
-              <PriceConfiguration />
+              <PriceConfiguration type="admin" />
             </div>
           </div>
         ) : null}

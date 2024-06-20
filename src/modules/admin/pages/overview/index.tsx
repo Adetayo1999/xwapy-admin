@@ -10,7 +10,7 @@ export default function OverView() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getMetricsThunk());
+    dispatch(getMetricsThunk({ type: "admin" }));
   }, [dispatch]);
 
   const METRICS_LIST = useMemo(

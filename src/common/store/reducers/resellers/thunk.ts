@@ -3,11 +3,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { requests } from "@/common/services/requests";
 import * as tp from "../../../services/types";
 
-export const getResellersThunk = createAsyncThunk(
+export const getResellersThunk = createAsyncThunk<any, tp.BaseRequestType>(
   "transactions/getTransactionsSliceThunk",
-  async (_, { fulfillWithValue, rejectWithValue }) => {
+  async (data, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const response = await requests.getResellers();
+      const response = await requests.getResellers(data);
       return fulfillWithValue(response.data.list);
     } catch (error: any) {
       toastError(error);
@@ -24,7 +24,7 @@ export const createResellerThunk = createAsyncThunk<
   async (data, { fulfillWithValue, rejectWithValue, dispatch }) => {
     try {
       const response = await requests.createReseller(data);
-      dispatch(getResellersThunk());
+      dispatch(getResellersThunk({ type: data.type }));
       return fulfillWithValue(response.data);
     } catch (error: any) {
       toastError(error);

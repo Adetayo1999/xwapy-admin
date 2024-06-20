@@ -69,7 +69,7 @@ export default function ResellerSettings() {
 
   useEffect(() => {
     if (!is_fetched) {
-      dispatch(getUserThunk());
+      dispatch(getUserThunk({ type: "reseller" }));
     }
   }, [dispatch, is_fetched]);
 
@@ -88,9 +88,10 @@ export default function ResellerSettings() {
         meta_data: requestData,
         key_value: "Description of the app branding",
         key_name: `${data.sub_domain}_branding`,
+        type: "reseller",
       });
     } catch (error: any) {
-      toastError(error.message || "Something went wrong...");
+      toastError(error);
     }
   };
 
@@ -424,7 +425,7 @@ export default function ResellerSettings() {
                 </button>
               </div>
               <DomainConfiguration />
-              <PriceConfiguration />
+              <PriceConfiguration type="reseller" />
             </div>
           </div>
         ) : null}

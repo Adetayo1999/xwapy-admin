@@ -47,7 +47,7 @@ export const AdminLayout = () => {
 
   useEffect(() => {
     if (!fetchUserToken()) return;
-    dispatch(getUserThunk());
+    dispatch(getUserThunk({ type: "admin" }));
   }, [dispatch]);
 
   if (!fetchUserToken()) {

@@ -26,8 +26,11 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
     try {
-      const response = await requests.login(data);
-      storeUserToken(response.data.token);
+      const response = await requests.login({
+        ...data,
+        type: loginType === "reseller" ? "reseller" : "admin",
+      });
+      storeUserToken(response.data.data.token);
 
       if (loginType === "reseller") {
         storeUserRole("reseller");

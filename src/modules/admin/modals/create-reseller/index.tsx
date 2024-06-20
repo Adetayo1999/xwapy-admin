@@ -50,7 +50,7 @@ export default function CreateSeller() {
 
   const onSubmit: SubmitHandler<CreateResellerRequestType> = async (data) => {
     try {
-      await dispatch(createResellerThunk(data)).unwrap();
+      await dispatch(createResellerThunk({ ...data, type: "admin" })).unwrap();
       handleClose();
     } catch (error) {
       console.log(error);

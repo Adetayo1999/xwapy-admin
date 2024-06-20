@@ -7,7 +7,13 @@ import { saveResellerSettingsThunk } from "@/common/store/reducers/resellers/thu
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-export const PriceConfiguration = () => {
+interface PriceConfigurationProps {
+  type: "reseller" | "admin";
+}
+
+export const PriceConfiguration: React.FC<PriceConfigurationProps> = ({
+  type,
+}) => {
   const dispatch = useAppDispatch();
   const {
     register,
@@ -24,7 +30,9 @@ export const PriceConfiguration = () => {
         Object.entries(data).filter(([, value]) => value !== "")
       ) as SaveSellerSettingsRequestBodyType;
 
-      await dispatch(saveResellerSettingsThunk({ ...filteredData })).unwrap();
+      await dispatch(
+        saveResellerSettingsThunk({ ...filteredData, type })
+      ).unwrap();
       toast.success("Reseller details saved successfully");
       reset();
     } catch (error) {

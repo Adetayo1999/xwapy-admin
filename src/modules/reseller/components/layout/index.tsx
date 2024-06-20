@@ -45,7 +45,7 @@ export const ResellerLayout = () => {
 
   useEffect(() => {
     if (!fetchUserToken()) return;
-    dispatch(getUserThunk());
+    dispatch(getUserThunk({ type: "reseller" }));
   }, [dispatch]);
 
   if (!fetchUserToken()) {

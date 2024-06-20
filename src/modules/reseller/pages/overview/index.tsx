@@ -10,7 +10,7 @@ export default function OverView() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getMetricsThunk());
+    dispatch(getMetricsThunk({ type: "reseller" }));
   }, [dispatch]);
 
   const METRICS_LIST = useMemo(

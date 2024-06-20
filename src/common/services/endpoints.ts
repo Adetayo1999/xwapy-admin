@@ -5,7 +5,7 @@ export const endpoints = {
   },
   get_overview: {
     method: "GET",
-    url: "/GetOverview",
+    url: (query: string) => `/GetOverview${query}`,
   },
   list_transactions: {
     method: "GET",
@@ -13,7 +13,7 @@ export const endpoints = {
   },
   get_sellers: {
     method: "GET",
-    url: "/Sellers",
+    url: (query: string) => `/Sellers${query}`,
   },
   get_seller_settings: {
     method: "GET",
@@ -53,6 +53,6 @@ export const endpoints = {
   },
   get_user_data: {
     method: "GET",
-    url: "/UserData",
+    url: (query: string) => `/UserData${query}`,
   },
 };

@@ -76,7 +76,7 @@ export default function ResellerTransactions() {
   );
 
   useEffect(() => {
-    dispatch(getTransactionsGroupThunk({}));
+    dispatch(getTransactionsGroupThunk({ type: "reseller" }));
   }, [dispatch]);
 
   return (

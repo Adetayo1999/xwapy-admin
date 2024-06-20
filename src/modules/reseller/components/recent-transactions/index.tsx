@@ -43,7 +43,7 @@ export const RecentTransaction = () => {
   );
 
   useEffect(() => {
-    dispatch(getTransactionsThunk({ filter: "recent" }));
+    dispatch(getTransactionsThunk({ filter: "recent", type: "reseller" }));
   }, [dispatch]);
 
   return (

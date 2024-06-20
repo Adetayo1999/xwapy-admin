@@ -28,7 +28,7 @@ export default function UserSettings() {
       try {
         setLoading(true);
         const response = await dispatch(
-          getUserSettingsThunk({ user_reference: id })
+          getUserSettingsThunk({ user_reference: id, type: "reseller" })
         );
         setUserSettings(response.payload);
       } catch (error) {

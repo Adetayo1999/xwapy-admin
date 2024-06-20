@@ -53,7 +53,7 @@ export default function Users() {
   );
 
   useEffect(() => {
-    dispatch(getUsersThunk({}));
+    dispatch(getUsersThunk({ type: "admin" }));
   }, [dispatch]);
 
   return (
