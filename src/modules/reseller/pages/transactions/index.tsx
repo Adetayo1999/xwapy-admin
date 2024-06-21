@@ -33,7 +33,7 @@ export default function ResellerTransactions() {
         reference: <p>{item.reference}</p>,
         amount: <p>{currencyFormatter(item.amount, "USD")}</p>,
         fee: <p>{currencyFormatter(item.fee, "USD")}</p>,
-        fiat_sum: <p>{currencyFormatter(item.fiat_sum, "USD")}</p>,
+        fiat_sum: <p>{currencyFormatter(item.fiat_sum, item.currency)}</p>,
         txn_details: (
           <button
             className="bg-primary rounded-xl px-4 py-2 text-xs text-[#000000] font-medium"

@@ -15,6 +15,7 @@ export interface TransactionDataType {
   amount: number;
   reference: string;
   reseller_name: string;
+  currency: string;
   type: "off-ramp";
 }
 
