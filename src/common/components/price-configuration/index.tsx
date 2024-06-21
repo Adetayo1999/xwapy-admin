@@ -1,6 +1,7 @@
 import CustomButton from "@/common/components/forms/button";
 import CustomInput from "@/common/components/forms/input";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { fetchUserRole } from "@/common/services/storage";
 import { SaveSellerSettingsRequestBodyType } from "@/common/services/types";
 import { saveResellerSettingsThunk } from "@/common/store/reducers/resellers/thunk";
@@ -22,16 +23,24 @@ export const PriceConfiguration: React.FC<PriceConfigurationProps> = ({
     reset,
   } = useForm<SaveSellerSettingsRequestBodyType>();
 
+  const { data: userData, loading } = useAppSelector((state) => state.userdata);
+
   const onSubmit: SubmitHandler<SaveSellerSettingsRequestBodyType> = async (
     data
   ) => {
+    if (!userData) return;
+
     try {
       const filteredData = Object.fromEntries(
         Object.entries(data).filter(([, value]) => value !== "")
       ) as SaveSellerSettingsRequestBodyType;
 
       await dispatch(
-        saveResellerSettingsThunk({ ...filteredData, type })
+        saveResellerSettingsThunk({
+          ...filteredData,
+          type,
+          domain_name: userData.custom_domain,
+        })
       ).unwrap();
       toast.success("Reseller details saved successfully");
       reset();
@@ -96,7 +105,7 @@ export const PriceConfiguration: React.FC<PriceConfigurationProps> = ({
         </div>
         <CustomButton
           className="h-fit w-fit rounded-xl py-2 px-8 text-sm"
-          isloading={isSubmitting}
+          isloading={isSubmitting || loading}
         >
           Save
         </CustomButton>

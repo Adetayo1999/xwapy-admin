@@ -36,7 +36,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <DashboardNav navs={navs} variant={variant} />
 
       {settingClickHandler ? (
-        <div className="absolute bottom-8">
+        <div className="mt-5">
           <button className="text-[#605F5F]" onClick={settingClickHandler}>
             Settings
           </button>

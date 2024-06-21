@@ -9,18 +9,22 @@ import React from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 interface CustomDropDownProps {
-  title: string;
+  title?: string;
+  defaultTitle?: string;
   options: { title: string }[];
+  handleChange?: (title: string) => void;
 }
 
 export const CustomDropDown: React.FC<CustomDropDownProps> = ({
   options,
   title,
+  handleChange,
+  defaultTitle = "Filter",
 }) => {
   return (
     <Menu>
       <MenuButton className="bg-[#F1F1F1] rounded-full px-5 py-2 text-xs font-semibold flex items-center capitalize md:min-w-[8rem] justify-center gap-x-3 ">
-        <span className="text-[#000000]">{title}</span>
+        <span className="text-[#000000]">{title || defaultTitle}</span>
         <span>
           <MdKeyboardArrowDown className="text-3xl text-[#3E3E3E]" />
         </span>
@@ -43,6 +47,7 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
                 className="inline-block text-left py-3 px-6 text-xs text-[#000000] font-medium
                hover:bg-opacity-45 transition duration-300 
               "
+                onClick={() => handleChange?.(item.title)}
               >
                 {item.title}
               </button>

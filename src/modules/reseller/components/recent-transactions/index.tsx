@@ -22,7 +22,7 @@ export const RecentTransaction = () => {
 
   const tableData = useMemo(
     () =>
-      data.map((item, idx) => ({
+      data.map((item) => ({
         reseller: <p>{item.reseller_name}</p>,
         reference: <p>{item.reference}</p>,
         amount: <p>{currencyFormatter(item.amount, "USD")}</p>,
@@ -35,7 +35,7 @@ export const RecentTransaction = () => {
               navigate(
                 paths.dashboard.resellers.modals.transaction_details.replace(
                   ":id",
-                  (idx + 1).toString()
+                  item.txn_id
                 )
               )
             }

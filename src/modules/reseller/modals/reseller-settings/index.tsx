@@ -1,4 +1,4 @@
-import { CustomToggle } from "@/common/components/custom-toggle";
+// import { CustomToggle } from "@/common/components/custom-toggle";
 import { BaseModal } from "@/common/components/modal";
 import Dropzone from "@/common/components/custom-dragdrop";
 import CustomColorInput from "@/common/components/forms/color-input";
@@ -146,7 +146,7 @@ export default function ResellerSettings() {
   return (
     <BaseModal handleClose={handleClose}>
       <div className="">
-        {!data || loading ? (
+        {!data && loading ? (
           <div className="h-[20rem] flex justify-center items-center flex-col animate-pulse gap-y-2">
             <MoonLoader size={30} />
             <p>Loading...</p>
@@ -418,13 +418,13 @@ export default function ResellerSettings() {
               </div>
             </div>
             <div className="md:flex-[0.65] flex gap-y-10 flex-col ">
-              <div className="flex items-center gap-x-6">
+              {/* <div className="flex items-center gap-x-6">
                 <CustomToggle label="Reseller Status" />
                 <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
                   In-Active
                 </button>
-              </div>
-              <DomainConfiguration />
+              </div> */}
+              <DomainConfiguration type="reseller" />
               <PriceConfiguration type="reseller" />
             </div>
           </div>

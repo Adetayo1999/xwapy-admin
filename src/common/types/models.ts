@@ -79,4 +79,16 @@ export interface UserType {
   first_name: string;
   last_name: string;
   sub_domain: string;
+  meta_data: {
+    domain_config: {
+      name: string;
+      host: string;
+      val_ip: string;
+    }[];
+  };
+  type: string;
+  custom_domain: string;
+  on_ramp_fee: number;
+  off_ramp_fee: number;
+  intrapay_merchant_id: string;
 }

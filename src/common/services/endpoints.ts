@@ -59,4 +59,12 @@ export const endpoints = {
     method: "GET",
     url: (query: string) => `/GetTransaction${query}`,
   },
+  check_domain: {
+    method: "POST",
+    url: "/CheckDomain",
+  },
+  save_domain: {
+    method: "POST",
+    url: "/SubmitCustomDomain",
+  },
 };

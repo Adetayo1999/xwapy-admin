@@ -4,7 +4,7 @@ import { CustomDropDown } from "@/common/components/custom-dropdown";
 import CustomInput from "@/common/components/forms/input";
 import { AnimatedTabs } from "@/common/components/animated-tabs";
 import { TransactionsTable } from "@/common/components/tables/transactions-table";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { currencyFormatter } from "@/common/helpers/currency-formatter";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { useModalNavigate } from "@/common/hooks/useModalNavigate";
@@ -16,6 +16,7 @@ export default function ResellerTransactions() {
   const { id } = useParams();
   const [urlParams] = useSearchParams();
   const { data: userData } = useAppSelector((state) => state.userdata);
+  const [sort, setSort] = useState("");
 
   const transactionType =
     (urlParams.get("type")?.replace("-", "_") as "on_ramp" | "off_ramp") ||
@@ -28,7 +29,7 @@ export default function ResellerTransactions() {
 
   const tableData = useMemo(
     () =>
-      data.map((item, idx) => ({
+      data.map((item) => ({
         reseller: <p>{item.reseller_name}</p>,
         reference: <p>{item.reference}</p>,
         amount: <p>{currencyFormatter(item.amount, "USD")}</p>,
@@ -41,7 +42,7 @@ export default function ResellerTransactions() {
               navigate(
                 paths.dashboard.resellers.modals.transaction_details.replace(
                   ":id",
-                  (idx + 1).toString()
+                  item.txn_id.toString()
                 )
               )
             }
@@ -56,9 +57,13 @@ export default function ResellerTransactions() {
 
   useEffect(() => {
     dispatch(
-      getTransactionsThunk({ type: "reseller", trade_type: transactionType })
+      getTransactionsThunk({
+        type: "reseller",
+        trade_type: transactionType,
+        sort_by: (sort?.toLowerCase() as any) || undefined,
+      })
     );
-  }, [dispatch, transactionType]);
+  }, [dispatch, transactionType, sort]);
 
   return (
     <div className="">
@@ -101,7 +106,9 @@ export default function ResellerTransactions() {
           />
           <div className="justify-between md:justify-start flex flex-row-reverse md:flex-row gap-x-6 md:gap-x-10">
             <CustomDropDown
-              title="Sort"
+              title={sort}
+              defaultTitle="Sort"
+              handleChange={(title) => setSort(title)}
               options={[{ title: "Completed" }, { title: "Pending" }]}
             />
             <div className="flex-1 md:flex-grow-0">

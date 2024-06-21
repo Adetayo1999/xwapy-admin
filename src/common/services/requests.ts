@@ -111,6 +111,16 @@ export const requests = {
     const query = queryHandler({ ...data });
     return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
+
+  checkDomain(data: tp.CheckDomainRequestBodyType) {
+    const { method, url } = endpoints.check_domain;
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url, data);
+  },
+
+  saveDomain(data: tp.CheckDomainRequestBodyType) {
+    const { method, url } = endpoints.save_domain;
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url, data);
+  },
 };
 
 const queryHandler = (queryObj: Record<string, any>): string => {

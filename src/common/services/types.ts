@@ -84,6 +84,7 @@ export type SaveSellerSettingsRequestBodyType = {
   fuspay_intrapay_merchant_id: string;
   xwap_on_ramp_fee_percent?: string;
   xwap_off_ramp_fee_percent?: string;
+  domain_name?: string;
 } & BaseRequestType;
 
 export type SaveSellerSettingsRequestType = Partial<{
@@ -136,4 +137,8 @@ export type getFromDataStoreRequestType = {
 
 export type GetTransactionDetailsRequestType = {
   order_no: number | string;
+} & BaseRequestType;
+
+export type CheckDomainRequestBodyType = {
+  domain_name: string;
 } & BaseRequestType;

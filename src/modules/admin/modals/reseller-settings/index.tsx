@@ -447,7 +447,7 @@ export default function ResellerSettings() {
                   In-Active
                 </button>
               </div>
-              <DomainConfiguration />
+              <DomainConfiguration type="admin" />
               <PriceConfiguration type="admin" />
             </div>
           </div>
