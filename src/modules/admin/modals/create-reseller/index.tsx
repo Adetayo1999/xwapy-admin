@@ -7,6 +7,7 @@ import { BaseModal } from "@/common/components/modal";
 import { toastError } from "@/common/helpers/error";
 import { renderInputLabel } from "@/common/helpers/label-text";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { requests } from "@/common/services/requests";
 import { CreateResellerRequestType } from "@/common/services/types";
 import { createResellerThunk } from "@/common/store/reducers/resellers/thunk";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -30,6 +31,9 @@ export default function CreateSeller() {
 
   const { logo } = watch();
 
+  const getBase64StringFromDataURL = (dataURL: string) =>
+    dataURL.replace("data:", "").replace(/^.+,/, "");
+
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -40,9 +44,14 @@ export default function CreateSeller() {
 
   const handleFileDrop = async (files: File[]) => {
     try {
-      const response = (await toBase64(files[0])) as string;
-
-      setValue("logo", response);
+      const base64_data = getBase64StringFromDataURL(
+        (await toBase64(files[0])) as string
+      );
+      const response = await requests.uploadFile({
+        base64_data,
+        file_name: files[0].name,
+      });
+      setValue("logo", response.data.url);
     } catch (error) {
       toastError(error);
     }
@@ -87,10 +96,13 @@ export default function CreateSeller() {
                     error={errors.fname}
                   />
                   <CustomInput
-                    label="Phone"
+                    label="Password"
                     labelClassName="text-xs"
                     className="text-xs placeholder:text-xs"
-                    placeholder="+2347045274781"
+                    placeholder="Enter Password"
+                    {...register("password", { required: true })}
+                    error={errors.password}
+                    type="password"
                   />
 
                   <CustomInput
@@ -193,7 +205,11 @@ export default function CreateSeller() {
               </div>
             </div>
             <div className="">
-              <CustomButton className="text-sm" isloading={isSubmitting}>
+              <CustomButton
+                className="text-sm"
+                isloading={isSubmitting}
+                disabled={!logo}
+              >
                 Create Seller
               </CustomButton>
             </div>

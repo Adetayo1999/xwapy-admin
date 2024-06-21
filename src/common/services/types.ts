@@ -68,6 +68,7 @@ export type CreateResellerRequestType = {
   secondary_color: string;
   domain_name: string;
   support_channel_url: string;
+  password: string;
 } & BaseRequestType;
 
 export type CreateResellerResponseType = APIResponseSuccessModel<null>;

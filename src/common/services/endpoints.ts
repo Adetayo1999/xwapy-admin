@@ -12,7 +12,7 @@ export const endpoints = {
     url: (query: string) => `/Transactions${query}`,
   },
   get_sellers: {
-    method: "GET",
+    method: "POST",
     url: (query: string) => `/Sellers${query}`,
   },
   get_seller_settings: {

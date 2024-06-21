@@ -37,7 +37,7 @@ export const requests = {
   getResellers(data: tp.BaseRequestType): Promise<tp.GetResellersResponseType> {
     const { method, url } = endpoints.get_sellers;
     const query = queryHandler({ ...data });
-    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query), data);
   },
 
   getResellerSettings(
