@@ -19,10 +19,10 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
 }) => {
   return (
     <Menu>
-      <MenuButton className="bg-[#F1F1F1] rounded-full px-5 py-2 text-xs font-semibold flex gap-x-1 items-center capitalize">
+      <MenuButton className="bg-[#F1F1F1] rounded-full px-5 py-2 text-xs font-semibold flex items-center capitalize md:min-w-[8rem] justify-center gap-x-3 ">
         <span className="text-[#000000]">{title}</span>
         <span>
-          <MdKeyboardArrowDown className="text-2xl text-[#3E3E3E]" />
+          <MdKeyboardArrowDown className="text-3xl text-[#3E3E3E]" />
         </span>
       </MenuButton>
       <Transition

@@ -39,6 +39,8 @@ export type GetOverviewResponseType = APIResponseSuccessModel<OverviewDataType>;
 
 export type ListTransactionsRequestType = Partial<{
   filter: "recent";
+  trade_type: "on_ramp" | "off_ramp";
+  sort_by: "completed" | "pending";
 }> &
   BaseRequestType;
 
@@ -130,4 +132,8 @@ export type AddToDataStoreRequestBodyType = {
 
 export type getFromDataStoreRequestType = {
   key_name: string;
+} & BaseRequestType;
+
+export type GetTransactionDetailsRequestType = {
+  order_no: number | string;
 } & BaseRequestType;

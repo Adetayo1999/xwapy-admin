@@ -12,9 +12,11 @@ export const SectionComponent: React.FC<SectionComponentProps> = ({
       <p className="text-sm text-[#B7B2B2] mb-1">{title}</p>
       <div className="">
         {typeof children === "string" ? (
-          <h4 className="text-[#605F5F] font-semibold text-sm">{children}</h4>
+          <h4 className="text-[#605F5F] font-semibold text-sm">
+            {children || "NIL"}
+          </h4>
         ) : (
-          children
+          children || "NIL"
         )}
       </div>
     </div>

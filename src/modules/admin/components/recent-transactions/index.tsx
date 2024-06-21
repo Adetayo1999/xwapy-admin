@@ -8,11 +8,17 @@ import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { paths } from "@/common/routes";
 import { getTransactionsThunk } from "@/common/store/reducers/transactions/thunks";
 import { useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export const RecentTransaction = () => {
   const navigate = useModalNavigate();
+  const [urlParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { data, loading } = useAppSelector((state) => state.transactions);
+
+  const transactionType =
+    (urlParams.get("type")?.replace("-", "_") as "on_ramp" | "off_ramp") ||
+    "on_ramp";
 
   const tableData = useMemo(
     () =>
@@ -43,8 +49,14 @@ export const RecentTransaction = () => {
   );
 
   useEffect(() => {
-    dispatch(getTransactionsThunk({ filter: "recent", type: "admin" }));
-  }, [dispatch]);
+    dispatch(
+      getTransactionsThunk({
+        filter: "recent",
+        type: "admin",
+        trade_type: transactionType,
+      })
+    );
+  }, [dispatch, transactionType]);
 
   return (
     <div className="">

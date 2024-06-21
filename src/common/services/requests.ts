@@ -105,6 +105,12 @@ export const requests = {
     const query = queryHandler({ ...data });
     return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
   },
+
+  getTransactionDetails(data: tp.GetTransactionDetailsRequestType) {
+    const { method, url } = endpoints.get_transaction_details;
+    const query = queryHandler({ ...data });
+    return makeAuthorizedRequestWithHeadersAndPayload(method, url(query));
+  },
 };
 
 const queryHandler = (queryObj: Record<string, any>): string => {

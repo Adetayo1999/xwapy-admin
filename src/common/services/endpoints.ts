@@ -55,4 +55,8 @@ export const endpoints = {
     method: "GET",
     url: (query: string) => `/UserData${query}`,
   },
+  get_transaction_details: {
+    method: "GET",
+    url: (query: string) => `/GetTransaction${query}`,
+  },
 };

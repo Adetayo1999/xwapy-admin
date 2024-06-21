@@ -1,83 +1,64 @@
 import { paths } from "@/common/routes";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import CustomInput from "@/common/components/forms/input";
 import { AnimatedTabs } from "@/common/components/animated-tabs";
 import { TransactionsTable } from "@/common/components/tables/transactions-table";
 import { useEffect, useMemo } from "react";
-import { getTransactionsGroupThunk } from "@/common/store/reducers/transactions-group/thunk";
 import { currencyFormatter } from "@/common/helpers/currency-formatter";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
-import { columns } from "@/common/helpers/tables/transaction";
+import { column as columns } from "@/common/helpers/tables/recent-transactions";
+import { getTransactionsThunk } from "@/common/store/reducers/transactions/thunks";
 
 export default function ResellerTransactions() {
   const { id } = useParams();
+  const [urlParams] = useSearchParams();
+  const { data: userData } = useAppSelector((state) => state.userdata);
+
+  const transactionType =
+    (urlParams.get("type")?.replace("-", "_") as "on_ramp" | "off_ramp") ||
+    "on_ramp";
 
   const dispatch = useAppDispatch();
   const navigate = useModalNavigate();
 
-  const { data, loading } = useAppSelector((state) => state.transaction_group);
+  const { data, loading } = useAppSelector((state) => state.transactions);
 
   const tableData = useMemo(
     () =>
       data.map((item, idx) => ({
-        reseller: <p>{item.seller_name}</p>,
-        total_on_ramp: (
-          <div className="flex items-center gap-x-4">
-            <p>{currencyFormatter(Number(item.total_on_ramp), "USD")}</p>
-            <button
-              className="text-xs px-4 py-1 text-[#000000] bg-[#C5C5C5] font-medium rounded-lg"
-              onClick={() =>
-                navigate(
-                  paths.dashboard.resellers.modals.transaction_details.replace(
-                    ":id",
-                    (idx + 1).toString()
-                  )
+        reseller: <p>{item.reseller_name}</p>,
+        reference: <p>{item.reference}</p>,
+        amount: <p>{currencyFormatter(item.amount, "USD")}</p>,
+        fee: <p>{currencyFormatter(item.fee, "USD")}</p>,
+        fiat_sum: <p>{currencyFormatter(item.fiat_sum, "USD")}</p>,
+        txn_details: (
+          <button
+            className="bg-primary rounded-xl px-4 py-2 text-xs text-[#000000] font-medium"
+            onClick={() =>
+              navigate(
+                paths.dashboard.resellers.modals.transaction_details.replace(
+                  ":id",
+                  (idx + 1).toString()
                 )
-              }
-            >
-              View
-            </button>
-          </div>
-        ),
-        total_off_ramp: (
-          <div className="flex items-center gap-x-4">
-            <p>{currencyFormatter(Number(item.total_off_ramp), "USD")}</p>
-            <button
-              className="text-xs px-4 py-1 text-[#000000] bg-[#C5C5C5] font-medium rounded-lg"
-              onClick={() =>
-                navigate(
-                  paths.dashboard.resellers.modals.transaction_details.replace(
-                    ":id",
-                    (idx + 1).toString()
-                  )
-                )
-              }
-            >
-              View
-            </button>
-          </div>
-        ),
-        commission: <p>{currencyFormatter(Number(item.commission), "USD")}</p>,
-        users: (
-          <p className="bg-[#E3F5D3] px-5 font-semibold py-2 text-xs rounded-lg text-[#000000] text-center">
-            {item.users}
-          </p>
-        ),
-        pending_txns: (
-          <button className="bg-[#FABD86]  font-semibold py-2 px-3 text-xs rounded-lg text-[#000000] text-center">
-            {item.pending_txn}
+              )
+            }
+          >
+            View
           </button>
         ),
+        date: <p>{item.date}</p>,
       })),
     [navigate, data]
   );
 
   useEffect(() => {
-    dispatch(getTransactionsGroupThunk({ type: "reseller" }));
-  }, [dispatch]);
+    dispatch(
+      getTransactionsThunk({ type: "reseller", trade_type: transactionType })
+    );
+  }, [dispatch, transactionType]);
 
   return (
     <div className="">
@@ -89,7 +70,7 @@ export default function ResellerTransactions() {
           <div className="flex flex-col gap-y-1">
             <p className="text-sm text-[#B7B2B2]">Reseller</p>
             <h2 className="font-semibold text-[#605F5F] text-sm">
-              Charles Avis
+              {userData?.first_name} {userData?.last_name}
             </h2>
           </div>
           <div className="flex flex-col gap-y-1">

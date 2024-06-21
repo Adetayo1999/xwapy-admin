@@ -72,7 +72,7 @@ export default function Transactions() {
   );
 
   useEffect(() => {
-    dispatch(getTransactionsGroupThunk({ type: "admin" }));
+    dispatch(getTransactionsGroupThunk({ type: "admin", filter: "all" }));
   }, [dispatch]);
 
   return (

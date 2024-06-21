@@ -5,6 +5,7 @@ import resellers from "./reducers/resellers";
 import transactionsGroup from "./reducers/transactions-group";
 import users from "./reducers/users";
 import userdata from "./reducers/userdata";
+import transactionDetails from "./reducers/transaction-details";
 
 export const rootReducer = combineReducers({
   metrics: metricsSlice,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   transaction_group: transactionsGroup,
   users,
   userdata,
+  transactionDetails,
 });
