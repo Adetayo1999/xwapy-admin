@@ -45,7 +45,7 @@ export default function Users() {
               getKYCStyles(item.kyc_status)
             )}
           >
-            {item.kyc_status}
+            {item.kyc_status?.replace("_", " ")}
           </button>
         ),
       })),

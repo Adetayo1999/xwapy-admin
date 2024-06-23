@@ -80,8 +80,8 @@ export default function ResellerTransactions() {
           </div>
           <div className="flex flex-col gap-y-1">
             <p className="text-sm text-[#B7B2B2]">Settlement</p>
-            <h2 className="font-semibold text-[#605F5F] text-sm">
-              intra_merchant_123344322
+            <h2 className="font-semibold text-[#605F5F] capitalize text-sm">
+              {userData?.intrapay_merchant_id}
             </h2>
           </div>
         </div>

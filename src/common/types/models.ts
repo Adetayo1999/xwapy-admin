@@ -72,6 +72,7 @@ export interface UserSettingsDataType {
   off_ramp_count: string;
   avg_txn: string;
   date_joined: string;
+  user_status: string;
 }
 
 export interface UserType {

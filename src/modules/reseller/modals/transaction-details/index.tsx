@@ -1,4 +1,3 @@
-import { CustomToggle } from "@/common/components/custom-toggle";
 import { BaseModal } from "@/common/components/modal";
 import { useNavigate, useParams } from "react-router-dom";
 import { currencyFormatter } from "@/common/helpers/currency-formatter";
@@ -62,14 +61,14 @@ export default function TransactionDetails() {
           <h1 className="font-bold text-xl md:text-2xl text-[#3B3838] ">
             Transaction Details
           </h1>
-          {transactionDetails && (
+          {/* {transactionDetails && (
             <div className="flex gap-x-6 justify-between md:justify-start items-center">
               <CustomToggle label="User Status" />
               <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
                 Inactive
               </button>
             </div>
-          )}
+          )} */}
         </div>
 
         {loading || !transactionDetails ? (
@@ -126,7 +125,7 @@ export default function TransactionDetails() {
                 title="Timestamp"
                 children={transactionDetails.timestamp}
               />
-              <SectionComponent title="KYC-Status">
+              {/* <SectionComponent title="KYC-Status">
                 <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
                   Inactive
                 </button>
@@ -138,7 +137,7 @@ export default function TransactionDetails() {
                   </button>
                   <CustomToggle />
                 </div>
-              </SectionComponent>
+              </SectionComponent> */}
             </div>
             <div className="">
               <p className="text-sm text-[#E16C00]">

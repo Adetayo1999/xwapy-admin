@@ -5,6 +5,7 @@ import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { fetchUserRole } from "@/common/services/storage";
 import { SaveSellerSettingsRequestBodyType } from "@/common/services/types";
 import { saveResellerSettingsThunk } from "@/common/store/reducers/resellers/thunk";
+import { getUserThunk } from "@/common/store/reducers/userdata/thunk";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -15,15 +16,19 @@ interface PriceConfigurationProps {
 export const PriceConfiguration: React.FC<PriceConfigurationProps> = ({
   type,
 }) => {
+  const { data: userData, loading } = useAppSelector((state) => state.userdata);
   const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    reset,
-  } = useForm<SaveSellerSettingsRequestBodyType>();
-
-  const { data: userData, loading } = useAppSelector((state) => state.userdata);
+  } = useForm<SaveSellerSettingsRequestBodyType>({
+    defaultValues: {
+      off_ramp_fee_percent: userData?.off_ramp_fee?.toString(),
+      on_ramp_fee_percent: userData?.on_ramp_fee?.toString(),
+      fuspay_intrapay_merchant_id: userData?.intrapay_merchant_id,
+    },
+  });
 
   const onSubmit: SubmitHandler<SaveSellerSettingsRequestBodyType> = async (
     data
@@ -42,8 +47,8 @@ export const PriceConfiguration: React.FC<PriceConfigurationProps> = ({
           domain_name: userData.custom_domain,
         })
       ).unwrap();
+      dispatch(getUserThunk({ type }));
       toast.success("Reseller details saved successfully");
-      reset();
     } catch (error) {
       console.log(error);
     }

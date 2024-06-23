@@ -30,9 +30,9 @@ const CustomColorInput: React.FC<CustomColorInputProps> = React.forwardRef(
           className={clsx("flex items-center gap-x-5 mb-1", containerClassName)}
         >
           {renderInputLabel(required, label, labelClassName)}
-          <div className="relative">
+          <div className="relative w-full">
             <input
-              className={clsx(className)}
+              className={clsx(className, "h-[2.5rem] md:w-[60%]")}
               name={name}
               {...rest}
               type="color"

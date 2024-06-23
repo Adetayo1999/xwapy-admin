@@ -9,7 +9,7 @@ import { requests } from "@/common/services/requests";
 import { getUserThunk } from "@/common/store/reducers/userdata/thunk";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsCheckAll } from "react-icons/bs";
 // import { FaCheck } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
@@ -40,6 +40,14 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
     }
   };
 
+  useEffect(() => {
+    if (data?.custom_domain) {
+      setIsDomainVerified(true);
+      setCustomDomain(data?.custom_domain);
+      setIsCustomDomainActive(true);
+    }
+  }, [data]);
+
   return (
     <div className="">
       <div className="justify-between flex items-center mb-5">
@@ -67,7 +75,7 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
             onChange={(e) => setIsCustomDomainActive(e.target.checked)}
           />
           <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
-            {isDomainVerified ? "Active" : "In-Active"}
+            {isDomainVerified || data?.custom_domain ? "Active" : "In-Active"}
           </button>
         </div>
         {isCustomDomainActive && !isDomainVerified ? (
@@ -118,54 +126,64 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
                   </span>
                 )}
               </button>
-              <button
-                className="ml-4 text-red-500 font-semibold text-sm"
-                onClick={() => {
-                  setIsDomainVerified(false);
-                }}
-              >
-                Remove Domain
-              </button>
+              {!data?.custom_domain ? (
+                <button
+                  className="ml-4 text-red-500 font-semibold text-sm"
+                  onClick={() => {
+                    setIsDomainVerified(false);
+                  }}
+                >
+                  Remove Domain
+                </button>
+              ) : null}
             </div>
-            <div className="">
-              <p className="text-sm text-[#727272] font-medium mb-2">
-                Kindly add the following details to the DNS record of your
-                custom domain.
-              </p>
-              <table className="w-full text-sm">
-                <thead className="text-left">
-                  <tr>
-                    <th className="pb-6"></th>
-                    <th className="pb-6 font-semibold text-[#14AD6D]">Type</th>
-                    <th className="pb-6 font-semibold text-[#14AD6D]">Host</th>
-                    <th className="pb-6 font-semibold text-[#14AD6D]">Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.meta_data?.domain_config?.map((item, idx) => (
-                    <tr key={idx}>
-                      <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
-                        {idx + 1}
-                      </td>
-                      <td className="flex items-center gap-x-3 whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
-                        <span>{item.name}</span>
-                        {/* <span>
+            {!data?.custom_domain ? (
+              <div className="">
+                <p className="text-sm text-[#727272] font-medium mb-2">
+                  Kindly add the following details to the DNS record of your
+                  custom domain.
+                </p>
+                <table className="w-full text-sm">
+                  <thead className="text-left">
+                    <tr>
+                      <th className="pb-6"></th>
+                      <th className="pb-6 font-semibold text-[#14AD6D]">
+                        Type
+                      </th>
+                      <th className="pb-6 font-semibold text-[#14AD6D]">
+                        Host
+                      </th>
+                      <th className="pb-6 font-semibold text-[#14AD6D]">
+                        Value
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.meta_data?.domain_config?.map((item, idx) => (
+                      <tr key={idx}>
+                        <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
+                          {idx + 1}
+                        </td>
+                        <td className="flex items-center gap-x-3 whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
+                          <span>{item.name}</span>
+                          {/* <span>
                           {item.verified && (
                             <FaCheck className="text-[#14AD6D]" />
                           )}
                         </span> */}
-                      </td>
-                      <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
-                        <DomainComponent value={item.host} />
-                      </td>
-                      <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
-                        <DomainComponent value={item.val_ip} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        </td>
+                        <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
+                          <DomainComponent value={item.host} />
+                        </td>
+                        <td className="whitespace-nowrap pr-[2rem] pb-6 text-left font-medium text-[#727272]">
+                          <DomainComponent value={item.val_ip} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>

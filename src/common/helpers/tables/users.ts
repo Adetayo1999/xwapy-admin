@@ -79,10 +79,10 @@ export const data = [
 
 export const getKYCStyles = (kyc: string) => {
   switch (kyc) {
-    case "inactive":
-      return "bg-[#FEEEDF]";
+    case "ACTIVE":
+      return "bg-[#E3F5D3]";
 
     default:
-      return "bg-[#E3F5D3]";
+      return "bg-[#FEEEDF]";
   }
 };

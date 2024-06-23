@@ -7,6 +7,8 @@ const locales: any = {
 };
 
 export const currencyFormatter = (amount: number, currency: string) => {
+  if (!currency) currency = "USD";
+
   const CURRENCY_FORMATTER = new Intl.NumberFormat(
     locales[currency] || "en-US",
     {
