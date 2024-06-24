@@ -22,7 +22,9 @@ const resellerSlice = createSlice({
     });
 
     builder.addCase(getResellersThunk.fulfilled, (state, action) => {
-      state.data = action.payload;
+      if (action.payload?.length) {
+        state.data = action.payload;
+      }
     });
 
     builder.addMatcher(

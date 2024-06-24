@@ -22,7 +22,9 @@ const transactionsSlice = createSlice({
     });
 
     builder.addCase(getTransactionsThunk.fulfilled, (state, action) => {
-      state.data = action.payload;
+      if (action.payload?.length) {
+        state.data = action.payload;
+      }
     });
 
     builder.addMatcher(
