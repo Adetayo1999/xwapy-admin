@@ -16,6 +16,11 @@ export const ResellerTable = () => {
     () =>
       data.map((item) => ({
         ...item,
+        name: item.name || "NIL",
+        date: item.date || "NIL",
+        domain: item.domain || "NIL",
+        email: item.email || "NIL",
+        phone: item.phone || "NIL",
 
         settings: (
           <button

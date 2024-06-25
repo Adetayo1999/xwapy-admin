@@ -1,13 +1,13 @@
-import Dropzone from "@/common/components/custom-dragdrop";
+// import Dropzone from "@/common/components/custom-dragdrop";
 import CustomButton from "@/common/components/forms/button";
-import CustomColorInput from "@/common/components/forms/color-input";
+// import CustomColorInput from "@/common/components/forms/color-input";
 import CustomInput from "@/common/components/forms/input";
 import CustomTextarea from "@/common/components/forms/textarea";
 import { BaseModal } from "@/common/components/modal";
-import { toastError } from "@/common/helpers/error";
-import { renderInputLabel } from "@/common/helpers/label-text";
+// import { toastError } from "@/common/helpers/error";
+// import { renderInputLabel } from "@/common/helpers/label-text";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { requests } from "@/common/services/requests";
+// import { requests } from "@/common/services/requests";
 import { CreateResellerRequestType } from "@/common/services/types";
 import { createResellerThunk } from "@/common/store/reducers/resellers/thunk";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -21,41 +21,37 @@ export default function CreateSeller() {
     formState: { errors, isSubmitting },
     register,
     handleSubmit,
-    setValue,
-    watch,
   } = useForm<CreateResellerRequestType>();
 
   const handleClose = () => {
     navigate(-1);
   };
 
-  const { logo } = watch();
+  // const getBase64StringFromDataURL = (dataURL: string) =>
+  //   dataURL.replace("data:", "").replace(/^.+,/, "");
 
-  const getBase64StringFromDataURL = (dataURL: string) =>
-    dataURL.replace("data:", "").replace(/^.+,/, "");
+  // const toBase64 = (file: File) =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = reject;
+  //   });
 
-  const toBase64 = (file: File) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-    });
-
-  const handleFileDrop = async (files: File[]) => {
-    try {
-      const base64_data = getBase64StringFromDataURL(
-        (await toBase64(files[0])) as string
-      );
-      const response = await requests.uploadFile({
-        base64_data,
-        file_name: files[0].name,
-      });
-      setValue("logo", response.data.url);
-    } catch (error) {
-      toastError(error);
-    }
-  };
+  // const handleFileDrop = async (files: File[]) => {
+  //   try {
+  //     const base64_data = getBase64StringFromDataURL(
+  //       (await toBase64(files[0])) as string
+  //     );
+  //     const response = await requests.uploadFile({
+  //       base64_data,
+  //       file_name: files[0].name,
+  //     });
+  //     setValue("logo", response.data.url);
+  //   } catch (error) {
+  //     toastError(error);
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<CreateResellerRequestType> = async (data) => {
     try {
@@ -131,7 +127,7 @@ export default function CreateSeller() {
                   />
                 </div>
               </div>
-              <div className="md:flex-[0.4]">
+              {/* <div className="md:flex-[0.4]">
                 <div className="mb-4">
                   <h4 className="text-lg text-[#3B3838] font-semibold">
                     Branding
@@ -202,14 +198,10 @@ export default function CreateSeller() {
                     error={errors.support_channel_url}
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="">
-              <CustomButton
-                className="text-sm"
-                isloading={isSubmitting}
-                disabled={!logo}
-              >
+              <CustomButton className="text-sm" isloading={isSubmitting}>
                 Create Seller
               </CustomButton>
             </div>

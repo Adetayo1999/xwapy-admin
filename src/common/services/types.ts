@@ -64,12 +64,12 @@ export type CreateResellerRequestType = {
   email: string;
   description: string;
   sub_domain: string;
-  logo: string;
-  primary_color: string;
-  text_color: string;
-  secondary_color: string;
-  domain_name: string;
-  support_channel_url: string;
+  // logo: string;
+  // primary_color: string;
+  // text_color: string;
+  // secondary_color: string;
+  // domain_name: string;
+  // support_channel_url: string;
   password: string;
 } & BaseRequestType;
 
