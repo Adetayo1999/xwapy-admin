@@ -1,4 +1,3 @@
-import { CustomToggle } from "@/common/components/custom-toggle";
 import { BaseModal } from "@/common/components/modal";
 import Dropzone from "@/common/components/custom-dragdrop";
 import CustomColorInput from "@/common/components/forms/color-input";
@@ -441,12 +440,12 @@ export default function ResellerSettings() {
               </div>
             </div>
             <div className="md:flex-[0.65] flex gap-y-10 flex-col">
-              <div className="flex items-center gap-x-6">
+              {/* <div className="flex items-center gap-x-6">
                 <CustomToggle label="Reseller Status" />
                 <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
                   In-Active
                 </button>
-              </div>
+              </div> */}
               <DomainConfiguration type="admin" />
               <PriceConfiguration type="admin" />
             </div>
@@ -456,3 +455,11 @@ export default function ResellerSettings() {
     </BaseModal>
   );
 }
+
+// TODO:
+/**
+ * 1. sub domain missing on get reseller settings
+ * 2. domain config missing on  get reseller settings
+ * 3. price configuration data and intrapay mid missing on get   reseller settings endpoint
+ *
+ */

@@ -1,3 +1,5 @@
+import { TRANSACTION_STATUS_TYPES } from "@/common/types";
+
 export const column = [
   {
     Header: "Reseller",
@@ -22,6 +24,10 @@ export const column = [
   {
     Header: "Txn Details",
     accessor: "txn_details",
+  },
+  {
+    Header: "Status",
+    accessor: "status",
   },
   {
     Header: "Date",
@@ -71,3 +77,22 @@ export const data = [
     date: "12th May 2023, 12:00pm",
   },
 ];
+
+export const getTransactionStatusStyles = (
+  status: TRANSACTION_STATUS_TYPES
+) => {
+  switch (status) {
+    case "INITIATED":
+      return "bg-yellow-100";
+
+    case "COMPLETED":
+      return "bg-[#E3F5D3]";
+
+    case "PENDING":
+    case "PENDING_KYC_ISSUE":
+      return "bg-[#FEEEDF]";
+
+    default:
+      return "bg-gray-500";
+  }
+};

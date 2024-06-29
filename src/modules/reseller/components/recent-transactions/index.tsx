@@ -1,12 +1,16 @@
 import { AnimatedTabs } from "@/common/components/animated-tabs";
 import { RecentTransactionTable } from "@/common/components/tables/recent-transactions-table";
 import { currencyFormatter } from "@/common/helpers/currency-formatter";
-import { column } from "@/common/helpers/tables/recent-transactions";
+import {
+  column,
+  getTransactionStatusStyles,
+} from "@/common/helpers/tables/recent-transactions";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
 import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { paths } from "@/common/routes";
 import { getTransactionsThunk } from "@/common/store/reducers/transactions/thunks";
+import clsx from "clsx";
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -41,6 +45,16 @@ export const RecentTransaction = () => {
             }
           >
             View
+          </button>
+        ),
+        status: (
+          <button
+            className={clsx(
+              "text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize",
+              getTransactionStatusStyles(item.status)
+            )}
+          >
+            {item.status?.replace("_", " ")}
           </button>
         ),
         date: <p>{item.date}</p>,

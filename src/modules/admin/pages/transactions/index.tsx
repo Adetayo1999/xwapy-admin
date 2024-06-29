@@ -1,108 +1,137 @@
+import { paths } from "@/common/routes";
+import { useParams, useSearchParams } from "react-router-dom";
 import { CustomDropDown } from "@/common/components/custom-dropdown";
 import CustomInput from "@/common/components/forms/input";
-import { useAppDispatch } from "@/common/hooks/useAppDispatch";
-import { useEffect, useMemo } from "react";
-import { getTransactionsGroupThunk } from "@/common/store/reducers/transactions-group/thunk";
+import { AnimatedTabs } from "@/common/components/animated-tabs";
 import { TransactionsTable } from "@/common/components/tables/transactions-table";
+import { useEffect, useMemo, useState } from "react";
 import { currencyFormatter } from "@/common/helpers/currency-formatter";
-import { paths } from "@/common/routes";
+import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
-import { columns } from "@/common/helpers/tables/transaction";
-import { useNavigate } from "react-router-dom";
+import {
+  column as columns,
+  getTransactionStatusStyles,
+} from "@/common/helpers/tables/recent-transactions";
+import { getTransactionsThunk } from "@/common/store/reducers/transactions/thunks";
+import clsx from "clsx";
 
-export default function Transactions() {
+export default function ResellerTransactions() {
+  const { id } = useParams();
+  const [urlParams] = useSearchParams();
+  const [sort, setSort] = useState("");
+
+  const transactionType =
+    (urlParams.get("type")?.replace("-", "_") as "on_ramp" | "off_ramp") ||
+    "on_ramp";
+
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const navigate = useModalNavigate();
 
-  const { data, loading } = useAppSelector((state) => state.transaction_group);
+  const { data, loading } = useAppSelector((state) => state.transactions);
 
   const tableData = useMemo(
     () =>
-      data.map((item, idx) => ({
-        reseller: <p>{item.seller_name}</p>,
-        total_on_ramp: (
-          <div className="flex items-center gap-x-4">
-            <p>{currencyFormatter(Number(item.total_on_ramp), "USD")}</p>
-            <button
-              className="text-xs px-4 py-1 text-[#000000] bg-[#C5C5C5] font-medium rounded-lg"
-              onClick={() =>
-                navigate(
-                  paths.dashboard.admin.resellers_transactions.replace(
-                    ":id",
-                    (idx + 1).toString()
-                  )
+      data.map((item) => ({
+        reseller: <p>{item.reseller_name}</p>,
+        reference: <p>{item.reference}</p>,
+        amount: <p>{currencyFormatter(item.amount, "USD")}</p>,
+        fee: <p>{currencyFormatter(item.fee, "USD")}</p>,
+        fiat_sum: <p>{currencyFormatter(item.fiat_sum, item.currency)}</p>,
+        txn_details: (
+          <button
+            className="bg-primary rounded-xl px-4 py-2 text-xs text-[#000000] font-medium"
+            onClick={() =>
+              navigate(
+                paths.dashboard.resellers.modals.transaction_details.replace(
+                  ":id",
+                  item.txn_id.toString()
                 )
-              }
-            >
-              View
-            </button>
-          </div>
-        ),
-        total_off_ramp: (
-          <div className="flex items-center gap-x-4">
-            <p>{currencyFormatter(Number(item.total_off_ramp), "USD")}</p>
-            <button
-              className="text-xs px-4 py-1 text-[#000000] bg-[#C5C5C5] font-medium rounded-lg"
-              onClick={() =>
-                navigate(
-                  paths.dashboard.admin.resellers_transactions.replace(
-                    ":id",
-                    (idx + 1).toString()
-                  )
-                )
-              }
-            >
-              View
-            </button>
-          </div>
-        ),
-        commission: <p>{currencyFormatter(Number(item.commission), "USD")}</p>,
-        users: (
-          <p className="bg-[#E3F5D3] px-5 font-semibold py-2 text-xs rounded-lg text-[#000000] text-center">
-            {item.users}
-          </p>
-        ),
-        pending_txns: (
-          <button className="bg-[#FABD86]  font-semibold py-2 px-3 text-xs rounded-lg text-[#000000] text-center">
-            {item.pending_txn}
+              )
+            }
+          >
+            View
           </button>
         ),
+        status: (
+          <button
+            className={clsx(
+              "text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize",
+              getTransactionStatusStyles(item.status)
+            )}
+          >
+            {item.status?.replace("_", " ")}
+          </button>
+        ),
+        date: <p>{item.date}</p>,
       })),
     [navigate, data]
   );
 
   useEffect(() => {
-    dispatch(getTransactionsGroupThunk({ type: "admin", filter: "all" }));
-  }, [dispatch]);
+    dispatch(
+      getTransactionsThunk({
+        type: "admin",
+        trade_type: transactionType,
+        sort_by: (sort?.toLowerCase() as any) || undefined,
+      })
+    );
+  }, [dispatch, transactionType, sort]);
 
   return (
     <div className="">
-      <div className="mb-8 flex flex-col md:flex-row gap-y-6 md:gap-y-0  md:items-center justify-between">
-        <div className="flex items-center gap-x-10 justify-between md:justify-start">
-          <h1 className="text-secondary text-2xl md:text-3xl font-bold capitalize">
-            Transactions Group
-          </h1>
-          <CustomDropDown
-            title="Country"
-            options={[
-              { title: "Nigeria" },
-              { title: "Ghana" },
-              { title: "Kenya" },
+      <div className="mb-8 flex flex-col gap-y-6">
+        <h1 className="text-secondary text-3xl font-bold capitalize">
+          Transactions
+        </h1>
+        {/* <div className="flex gap-x-12">
+          <div className="flex flex-col gap-y-1">
+            <p className="text-sm text-[#B7B2B2]">Reseller</p>
+            <h2 className="font-semibold text-[#605F5F] text-sm">
+              {userData?.first_name} {userData?.last_name}
+            </h2>
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <p className="text-sm text-[#B7B2B2]">Settlement</p>
+            <h2 className="font-semibold text-[#605F5F] capitalize text-sm">
+              {userData?.intrapay_merchant_id}
+            </h2>
+          </div>
+        </div> */}
+        <div className="flex md:items-center gap-x-10 flex-col md:flex-row gap-y-6 md:gap-y-0">
+          <AnimatedTabs
+            tabs={[
+              {
+                id: 1,
+                title: "on-ramp",
+                path:
+                  paths.dashboard.admin.transactions.replace(":id", id!) +
+                  "?type=on-ramp",
+              },
+              {
+                id: 2,
+                title: "off-ramp",
+                path:
+                  paths.dashboard.admin.transactions.replace(":id", id!) +
+                  "?type=off-ramp",
+              },
             ]}
           />
-        </div>
-        <div className="items-center gap-x-8 flex justify-between md:justify-start">
-          <div className="flex-1 md:flex-grow-0">
-            <CustomInput
-              showError={false}
-              placeholder="Search"
-              className="md:min-w-[20rem] text-sm"
+          <div className="justify-between md:justify-start flex flex-row-reverse md:flex-row gap-x-6 md:gap-x-10">
+            <CustomDropDown
+              title={sort}
+              defaultTitle="Sort"
+              handleChange={(title) => setSort(title)}
+              options={[{ title: "Completed" }, { title: "Pending" }]}
             />
+            <div className="flex-1 md:flex-grow-0">
+              <CustomInput
+                showError={false}
+                placeholder="Search"
+                className="min-w-[20rem] text-sm"
+              />
+            </div>
           </div>
-          <CustomDropDown
-            title="Sort"
-            options={[{ title: "Completed" }, { title: "Pending" }]}
-          />
         </div>
       </div>
       <TransactionsTable columns={columns} data={tableData} loading={loading} />

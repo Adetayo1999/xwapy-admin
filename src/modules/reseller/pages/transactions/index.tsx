@@ -9,8 +9,12 @@ import { currencyFormatter } from "@/common/helpers/currency-formatter";
 import { useAppDispatch } from "@/common/hooks/useAppDispatch";
 import { useModalNavigate } from "@/common/hooks/useModalNavigate";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
-import { column as columns } from "@/common/helpers/tables/recent-transactions";
+import {
+  column as columns,
+  getTransactionStatusStyles,
+} from "@/common/helpers/tables/recent-transactions";
 import { getTransactionsThunk } from "@/common/store/reducers/transactions/thunks";
+import clsx from "clsx";
 
 export default function ResellerTransactions() {
   const { id } = useParams();
@@ -48,6 +52,16 @@ export default function ResellerTransactions() {
             }
           >
             View
+          </button>
+        ),
+        status: (
+          <button
+            className={clsx(
+              "text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize",
+              getTransactionStatusStyles(item.status)
+            )}
+          >
+            {item.status?.replace("_", " ")}
           </button>
         ),
         date: <p>{item.date}</p>,

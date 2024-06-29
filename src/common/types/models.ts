@@ -1,3 +1,9 @@
+export type TRANSACTION_STATUS_TYPES =
+  | "INITIATED"
+  | "PENDING"
+  | "PENDING_KYC_ISSUE"
+  | "COMPLETED";
+
 export interface OverviewDataType {
   total_resellers: number;
   users: number;
@@ -17,6 +23,7 @@ export interface TransactionDataType {
   reseller_name: string;
   currency: string;
   type: "off-ramp";
+  status: TRANSACTION_STATUS_TYPES;
 }
 
 export interface SellerDataType {
