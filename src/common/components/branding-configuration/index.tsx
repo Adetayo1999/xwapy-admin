@@ -11,6 +11,7 @@ import { CustomToggle } from "../custom-toggle";
 import { getKYCStyles } from "@/common/helpers/tables/users";
 import clsx from "clsx";
 import toast from "react-hot-toast";
+import { generateRandomString } from "@/common/helpers/generate-random-string";
 
 type BRANDING_THEME_OPTIONS =
   | "metallic"
@@ -106,7 +107,7 @@ export const BrandingConfiguration = () => {
   };
 
   const getResellerBranding = useCallback(async () => {
-    if (!data) return;
+    if (!data?.sub_domain) return;
 
     try {
       setLoading(true);
@@ -141,7 +142,7 @@ export const BrandingConfiguration = () => {
     } finally {
       setLoading(false);
     }
-  }, [data, setValue]);
+  }, [data?.sub_domain, setValue]);
 
   const getBase64StringFromDataURL = (dataURL: string) =>
     dataURL.replace("data:", "").replace(/^.+,/, "");
@@ -179,7 +180,7 @@ export const BrandingConfiguration = () => {
         const base64_data = await toBase64(files[0]);
         const response = await requests.uploadFile({
           base64_data,
-          file_name: files[0].name,
+          file_name: generateRandomString(),
         });
 
         setImages((prev) => ({ ...prev, [file_key]: response.data.url }));

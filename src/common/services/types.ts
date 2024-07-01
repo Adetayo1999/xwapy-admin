@@ -76,15 +76,16 @@ export type CreateResellerRequestType = {
 export type CreateResellerResponseType = APIResponseSuccessModel<null>;
 
 export type SaveSellerSettingsRequestBodyType = {
-  primary_color: string;
-  text_color: string;
-  secondary_color: string;
-  on_ramp_fee_percent: string;
-  off_ramp_fee_percent: string;
-  fuspay_intrapay_merchant_id: string;
+  // primary_color: string;
+  // text_color: string;
+  // secondary_color: string;
+  on_ramp_fee_percent?: string | number;
+  off_ramp_fee_percent?: string | number;
+  fuspay_intrapay_merchant_id?: string;
   xwap_on_ramp_fee_percent?: string;
   xwap_off_ramp_fee_percent?: string;
   domain_name?: string;
+  referral_commission_percent?: string;
 } & BaseRequestType;
 
 export type SaveSellerSettingsRequestType = Partial<{

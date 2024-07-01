@@ -41,7 +41,7 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
   };
 
   useEffect(() => {
-    if (data?.custom_domain) {
+    if (data?.custom_domain && data?.custom_domain !== "n/a") {
       setIsDomainVerified(true);
       setCustomDomain(data?.custom_domain);
       setIsCustomDomainActive(true);
@@ -75,7 +75,10 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
             onChange={(e) => setIsCustomDomainActive(e.target.checked)}
           />
           <button className="bg-[#FEEEDF] text-xs px-4 py-2 text-[#000000] font-semibold rounded-xl min-w-20 capitalize">
-            {isDomainVerified || data?.custom_domain ? "Active" : "In-Active"}
+            {isDomainVerified ||
+            (data?.custom_domain && data?.custom_domain !== "n/a")
+              ? "Active"
+              : "In-Active"}
           </button>
         </div>
         {isCustomDomainActive && !isDomainVerified ? (
@@ -126,7 +129,7 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
                   </span>
                 )}
               </button>
-              {!data?.custom_domain ? (
+              {data?.custom_domain && data?.custom_domain !== "n/a" ? (
                 <button
                   className="ml-4 text-red-500 font-semibold text-sm"
                   onClick={() => {
@@ -137,7 +140,7 @@ export const DomainConfiguration: React.FC<{ type: "admin" | "reseller" }> = ({
                 </button>
               ) : null}
             </div>
-            {!data?.custom_domain ? (
+            {data?.custom_domain && data?.custom_domain !== "n/a" ? (
               <div className="">
                 <p className="text-sm text-[#727272] font-medium mb-2">
                   Kindly add the following details to the DNS record of your

@@ -1,31 +1,21 @@
 import { BaseModal } from "@/common/components/modal";
 import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect } from "react";
-import { useAppDispatch } from "@/common/hooks/useAppDispatch";
+import { useCallback } from "react";
 import { MoonLoader } from "react-spinners";
 import { SectionComponent } from "@/common/components/section-component";
 import { PriceConfiguration } from "@/common/components/price-configuration";
 import { DomainConfiguration } from "@/common/components/domain-configuration";
 import { useAppSelector } from "@/common/hooks/useAppSelector";
-import { getUserThunk } from "@/common/store/reducers/userdata/thunk";
 import { BrandingConfiguration } from "@/common/components/branding-configuration";
+import { ReferralBonusConfiguration } from "@/common/components/referral-bonus-configuration";
 
 export default function ResellerSettings() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { data, is_fetched, loading } = useAppSelector(
-    (state) => state.userdata
-  );
+  const { data, loading } = useAppSelector((state) => state.userdata);
 
   const handleClose = useCallback(() => {
     navigate(-1);
   }, [navigate]);
-
-  useEffect(() => {
-    if (!is_fetched) {
-      dispatch(getUserThunk({ type: "reseller" }));
-    }
-  }, [dispatch, is_fetched]);
 
   return (
     <BaseModal handleClose={handleClose}>
@@ -83,6 +73,7 @@ export default function ResellerSettings() {
               </div> */}
               <DomainConfiguration type="reseller" />
               <PriceConfiguration type="reseller" />
+              <ReferralBonusConfiguration type="reseller" />
             </div>
           </div>
         ) : null}
